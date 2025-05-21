@@ -1,10 +1,13 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ChevronRight, ArrowRight } from 'lucide-react';
+import { useProducts } from '@/hooks/useProducts';
 
 const WhatIsQuercetin = () => {
+  // Get top products to recommend at the bottom
+  const { topProducts } = useProducts();
+
   return (
     <div>
       {/* Hero Section */}
@@ -20,7 +23,7 @@ const WhatIsQuercetin = () => {
       </section>
       
       {/* Main Content */}
-      <section className="section bg-white">
+      <section className="section bg-white py-16">
         <div className="container mx-auto">
           <div className="max-w-3xl mx-auto">
             <div className="prose prose-lg max-w-none">

@@ -4,25 +4,21 @@ import { Link } from 'react-router-dom';
 import StarRating from './StarRating';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import { trackProductClick } from '@/integrations/supabase/client';
+import { ProductType } from '@/hooks/useProducts';
 
 interface ProductCardProps {
-  product: {
-    id: number;
-    name: string;
-    brand: string;
-    image: string;
-    rating: number;
-    reviewCount: number;
-    price: number;
-    link: string;
-    rank?: number;
-  };
+  product: ProductType;
   showRank?: boolean;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, showRank = false }) => {
+  const handleClick = () => {
+    trackProductClick(product.id);
+  };
+
   return (
-    <div className="product-card relative">
+    <div className="product-card relative bg-white p-6 rounded-lg shadow-sm border border-gray-100">
       {showRank && product.rank && (
         <div className="absolute -top-4 -left-4 bg-brand-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-md z-10">
           #{product.rank}
@@ -32,7 +28,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, showRank = false }) 
       <div className="flex flex-col md:flex-row md:items-center gap-4">
         <div className="md:w-28 lg:w-36 flex-shrink-0 mx-auto md:mx-0">
           <img 
-            src={product.image} 
+            src={product.image || "https://placehold.co/300x400/f5f5f5/cccccc?text=No+Image"} 
             alt={product.name} 
             className="w-full object-contain h-40 md:h-32"
           />
@@ -44,7 +40,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, showRank = false }) 
           
           <div className="flex items-center mb-3">
             <StarRating rating={product.rating} className="mr-2" />
-            <span className="text-sm text-gray-600">({product.reviewCount} reviews)</span>
+            <span className="text-sm text-gray-600">({product.review_count || 0} reviews)</span>
           </div>
           
           <div className="flex items-center text-lg font-semibold text-gray-900 mb-3">
@@ -52,7 +48,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, showRank = false }) 
           </div>
           
           <div className="flex flex-col sm:flex-row gap-3">
-            <Button asChild className="bg-teal-600 hover:bg-teal-700">
+            <Button asChild className="bg-teal-600 hover:bg-teal-700" onClick={handleClick}>
               <a href={product.link} target="_blank" rel="noopener noreferrer">
                 View Best Price
               </a>

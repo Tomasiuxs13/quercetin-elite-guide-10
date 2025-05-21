@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronRight, Check } from 'lucide-react';
@@ -11,43 +10,8 @@ import {
   AccordionItem, 
   AccordionTrigger 
 } from '@/components/ui/accordion';
-
-// Sample product data
-const topProducts = [
-  {
-    id: 1,
-    name: "Natural Quercetin Complex",
-    brand: "PureSci Nutrition",
-    image: "https://placehold.co/300x400/f5f5f5/cccccc?text=Quercetin+Complex",
-    rating: 4.9,
-    reviewCount: 432,
-    price: 29.99,
-    link: "#affiliate-link-1",
-    rank: 1
-  },
-  {
-    id: 2,
-    name: "Quercetin Plus Bromelain",
-    brand: "Vitality Research",
-    image: "https://placehold.co/300x400/f5f5f5/cccccc?text=Quercetin+Plus",
-    rating: 4.8,
-    reviewCount: 387,
-    price: 27.99,
-    link: "#affiliate-link-2",
-    rank: 2
-  },
-  {
-    id: 3,
-    name: "Advanced Quercetin 500mg",
-    brand: "Optimal Health",
-    image: "https://placehold.co/300x400/f5f5f5/cccccc?text=Advanced+Quercetin",
-    rating: 4.7,
-    reviewCount: 312,
-    price: 23.95,
-    link: "#affiliate-link-3",
-    rank: 3
-  }
-];
+import { useProducts } from '@/hooks/useProducts';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const benefits = [
   {
@@ -88,6 +52,11 @@ const faqs = [
 ];
 
 const Home = () => {
+  const { topProducts, isLoading } = useProducts();
+  
+  // Featured product is the top ranked one
+  const featuredProduct = topProducts[0];
+
   return (
     <div>
       {/* Hero Section */}
@@ -126,69 +95,120 @@ const Home = () => {
               <div className="absolute -top-6 -right-6 w-64 h-64 bg-teal-100 rounded-full opacity-60 blur-2xl z-0"></div>
               <div className="absolute -bottom-10 -left-10 w-72 h-72 bg-brand-100 rounded-full opacity-60 blur-2xl z-0"></div>
               
-              <div className="relative z-10 bg-white rounded-2xl shadow-xl overflow-hidden p-6 md:p-8">
-                <div className="flex items-center mb-6">
-                  <div className="mr-4 flex-shrink-0">
-                    <img 
-                      src="https://placehold.co/300x400/f5f5f5/cccccc?text=Quercetin+Complex" 
-                      alt="Top Rated Quercetin Supplement" 
-                      className="w-16 h-20 object-contain"
-                    />
-                  </div>
-                  <div>
-                    <div className="text-sm text-brand-600 font-medium">#1 TOP RATED</div>
-                    <h3 className="font-bold text-lg">Natural Quercetin Complex</h3>
-                    <div className="flex items-center">
-                      <StarRating rating={4.9} size={14} className="mr-2" />
-                      <span className="text-sm text-gray-600">4.9/5 (432 reviews)</span>
+              {isLoading || !featuredProduct ? (
+                <div className="relative z-10 bg-white rounded-2xl shadow-xl overflow-hidden p-6 md:p-8">
+                  <div className="flex items-center mb-6">
+                    <div className="mr-4 flex-shrink-0">
+                      <Skeleton className="w-16 h-20" />
+                    </div>
+                    <div>
+                      <div className="text-sm text-brand-600 font-medium">#1 TOP RATED</div>
+                      <Skeleton className="h-6 w-48 mb-2" />
+                      <Skeleton className="h-4 w-32" />
                     </div>
                   </div>
+                  
+                  <div className="space-y-3 mb-6">
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-3/4" />
+                  </div>
+                  
+                  <Skeleton className="h-10 w-full" />
                 </div>
-                
-                <ul className="space-y-3 mb-6">
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-teal-500 mr-2 mt-0.5" />
-                    <span>Highest bioavailability in our tests</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-teal-500 mr-2 mt-0.5" />
-                    <span>500mg pure quercetin per serving</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-teal-500 mr-2 mt-0.5" />
-                    <span>Added bromelain for enhanced absorption</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-teal-500 mr-2 mt-0.5" />
-                    <span>Free from common allergens</span>
-                  </li>
-                </ul>
-                
-                <Button asChild className="w-full bg-teal-600 hover:bg-teal-700">
-                  <a href="#affiliate-link-1" target="_blank" rel="noopener noreferrer">
-                    View Best Price
-                  </a>
-                </Button>
-              </div>
+              ) : (
+                <div className="relative z-10 bg-white rounded-2xl shadow-xl overflow-hidden p-6 md:p-8">
+                  <div className="flex items-center mb-6">
+                    <div className="mr-4 flex-shrink-0">
+                      <img 
+                        src={featuredProduct.image || "https://placehold.co/300x400/f5f5f5/cccccc?text=Quercetin+Complex"} 
+                        alt={featuredProduct.name} 
+                        className="w-16 h-20 object-contain"
+                      />
+                    </div>
+                    <div>
+                      <div className="text-sm text-brand-600 font-medium">#1 TOP RATED</div>
+                      <h3 className="font-bold text-lg">{featuredProduct.name}</h3>
+                      <div className="flex items-center">
+                        <StarRating rating={featuredProduct.rating} size={14} className="mr-2" />
+                        <span className="text-sm text-gray-600">{featuredProduct.rating}/5 ({featuredProduct.review_count || 0} reviews)</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <ul className="space-y-3 mb-6">
+                    <li className="flex items-start">
+                      <Check className="h-5 w-5 text-teal-500 mr-2 mt-0.5" />
+                      <span>Highest bioavailability in our tests</span>
+                    </li>
+                    <li className="flex items-start">
+                      <Check className="h-5 w-5 text-teal-500 mr-2 mt-0.5" />
+                      <span>500mg pure quercetin per serving</span>
+                    </li>
+                    <li className="flex items-start">
+                      <Check className="h-5 w-5 text-teal-500 mr-2 mt-0.5" />
+                      <span>Added bromelain for enhanced absorption</span>
+                    </li>
+                    <li className="flex items-start">
+                      <Check className="h-5 w-5 text-teal-500 mr-2 mt-0.5" />
+                      <span>Free from common allergens</span>
+                    </li>
+                  </ul>
+                  
+                  <Button 
+                    asChild 
+                    className="w-full bg-teal-600 hover:bg-teal-700"
+                    onClick={() => trackProductClick(featuredProduct.id)}
+                  >
+                    <a href={featuredProduct.link} target="_blank" rel="noopener noreferrer">
+                      View Best Price
+                    </a>
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </section>
       
       {/* Top Products Section */}
-      <section className="section bg-white">
+      <section className="section bg-white py-16">
         <div className="container mx-auto">
           <div className="text-center mb-12">
-            <h2 className="section-title">Top Quercetin Supplements</h2>
+            <h2 className="text-3xl font-bold mb-4">Top Quercetin Supplements</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Our expert team has researched and tested dozens of Quercetin supplements to bring you the very best options on the market.
             </p>
           </div>
           
           <div className="space-y-6 mb-10">
-            {topProducts.map(product => (
-              <ProductCard key={product.id} product={product} showRank={true} />
-            ))}
+            {isLoading ? (
+              // Skeleton loading state
+              [...Array(3)].map((_, i) => (
+                <div key={i} className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                  <div className="flex flex-col md:flex-row md:items-center gap-4">
+                    <div className="md:w-28 flex-shrink-0">
+                      <Skeleton className="w-full h-32" />
+                    </div>
+                    <div className="flex-grow">
+                      <Skeleton className="h-6 w-48 mb-3" />
+                      <Skeleton className="h-4 w-32 mb-3" />
+                      <Skeleton className="h-4 w-40 mb-3" />
+                      <Skeleton className="h-6 w-24 mb-3" />
+                      <div className="flex gap-3">
+                        <Skeleton className="h-10 w-32" />
+                        <Skeleton className="h-10 w-32" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              topProducts.slice(0, 3).map((product, index) => (
+                <ProductCard key={product.id} product={product} showRank={true} />
+              ))
+            )}
           </div>
           
           <div className="text-center">
@@ -202,10 +222,10 @@ const Home = () => {
       </section>
       
       {/* Benefits Section */}
-      <section className="section bg-gray-50">
+      <section className="section bg-gray-50 py-16">
         <div className="container mx-auto">
           <div className="text-center mb-12">
-            <h2 className="section-title">Why Choose Quercetin?</h2>
+            <h2 className="text-3xl font-bold mb-4">Why Choose Quercetin?</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Quercetin is a powerful flavonoid with numerous health benefits backed by scientific research.
             </p>
@@ -231,10 +251,10 @@ const Home = () => {
       </section>
       
       {/* FAQ Section */}
-      <section className="section bg-white">
+      <section className="section bg-white py-16">
         <div className="container mx-auto">
           <div className="text-center mb-12">
-            <h2 className="section-title">Frequently Asked Questions</h2>
+            <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Get answers to the most common questions about Quercetin supplements.
             </p>
