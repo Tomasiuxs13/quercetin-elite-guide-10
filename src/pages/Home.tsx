@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/accordion';
 import { useProducts } from '@/hooks/useProducts';
 import { Skeleton } from '@/components/ui/skeleton';
+import { trackProductClick } from '@/integrations/supabase/client';
 
 const benefits = [
   {
