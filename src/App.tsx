@@ -17,6 +17,9 @@ import Benefits from "./pages/Benefits";
 import FAQ from "./pages/FAQ";
 import ProductsPage from "./pages/Products";
 import TopPicks from "./pages/TopPicks";
+import ProductsComparison from "./pages/ProductsComparison";
+import About from "./pages/About";
+import Blog from "./pages/Blog";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -50,6 +53,9 @@ const App = () => (
               <Route path="/faq" element={<FAQ />} />
               <Route path="/products" element={<ProductsPage />} />
               <Route path="/products/top-picks" element={<TopPicks />} />
+              <Route path="/products/comparison" element={<ProductsComparison />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/blog" element={<Blog />} />
               <Route path="*" element={<NotFound />} />
             </Route>
             
