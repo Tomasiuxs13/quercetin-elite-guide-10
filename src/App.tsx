@@ -13,6 +13,10 @@ import AdminLayout from "./components/admin/AdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
 import Products from "./pages/admin/Products";
 import Auth from "./pages/Auth";
+import Benefits from "./pages/Benefits";
+import FAQ from "./pages/FAQ";
+import ProductsPage from "./pages/Products";
+import TopPicks from "./pages/TopPicks";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -42,6 +46,10 @@ const App = () => (
             <Route element={<PublicLayout />}>
               <Route path="/" element={<Home />} />
               <Route path="/what-is-quercetin" element={<WhatIsQuercetin />} />
+              <Route path="/benefits" element={<Benefits />} />
+              <Route path="/faq" element={<FAQ />} />
+              <Route path="/products" element={<ProductsPage />} />
+              <Route path="/products/top-picks" element={<TopPicks />} />
               <Route path="*" element={<NotFound />} />
             </Route>
             
