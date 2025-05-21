@@ -13,9 +13,9 @@ export type ProductType = {
   link: string;
   rank: number | null;
   description?: string | null;
-  pros?: any | null;
-  cons?: any | null;
-  features?: any | null;
+  pros?: string[] | null;
+  cons?: string[] | null;
+  features?: string[] | null;
 };
 
 export function useProducts() {
