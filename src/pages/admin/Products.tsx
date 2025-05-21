@@ -44,6 +44,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
+import { Json } from '@/integrations/supabase/types';
 
 type Product = {
   id: string;
@@ -112,7 +113,19 @@ const Products = () => {
   // Mutation to create/update product
   const upsertProductMutation = useMutation({
     mutationFn: async (values: ProductFormValues & { id?: string }) => {
-      const productData = { ...values };
+      // Ensure all required fields are set
+      const productData = { 
+        ...values,
+        // Ensure we set non-null values for required fields
+        name: values.name,
+        brand: values.brand,
+        rating: values.rating,
+        price: values.price,
+        link: values.link,
+        // Handle optional fields properly
+        image: values.image || null,
+        description: values.description || null,
+      };
       
       if (selectedProduct) {
         // Update existing product
