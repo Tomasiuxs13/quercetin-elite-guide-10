@@ -50,7 +50,7 @@ export function useProducts() {
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
-  // Get a single product by ID
+  // Get a single product by ID with full details
   const getProduct = async (id: string): Promise<ProductType | null> => {
     const { data, error } = await supabase
       .from('products')
@@ -59,7 +59,29 @@ export function useProducts() {
       .single();
     
     if (error || !data) return null;
-    return data as ProductType;
+    
+    // Convert jsonb columns to appropriate format
+    const formattedData: ProductType = {
+      ...data,
+      pros: data.pros ? (data.pros as string[]) : null,
+      cons: data.cons ? (data.cons as string[]) : null,
+      features: data.features ? (data.features as string[]) : null
+    };
+    
+    return formattedData;
+  };
+
+  // Get a product by ID (using React Query)
+  const useProductDetail = (id: string | undefined) => {
+    return useQuery({
+      queryKey: ['product', id],
+      queryFn: async () => {
+        if (!id) return null;
+        return await getProduct(id);
+      },
+      enabled: !!id,
+      staleTime: 1000 * 60 * 5, // 5 minutes
+    });
   };
 
   // Log a product click
@@ -73,6 +95,7 @@ export function useProducts() {
     isLoading,
     error,
     getProduct,
+    useProductDetail,
     logProductClick,
     refetch
   };

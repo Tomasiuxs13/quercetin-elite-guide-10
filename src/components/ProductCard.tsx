@@ -7,7 +7,6 @@ import { ArrowRight, Check, ExternalLink } from 'lucide-react';
 import { trackProductClick } from '@/integrations/supabase/client';
 import { ProductType } from '@/hooks/useProducts';
 import { Badge } from '@/components/ui/badge';
-import { Separator } from './ui/separator';
 
 interface ProductCardProps {
   product: ProductType;

@@ -1,69 +1,34 @@
 
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { ArrowLeft, ExternalLink, Check, AlertTriangle } from 'lucide-react';
+import React from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { ChevronLeft, Check, X, ExternalLink, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useProducts } from '@/hooks/useProducts';
-import { Skeleton } from '@/components/ui/skeleton';
-import StarRating from '@/components/StarRating';
 import { Separator } from '@/components/ui/separator';
-import TrackedLink from '@/components/TrackedLink';
-import { toast } from '@/components/ui/sonner';
+import { Badge } from '@/components/ui/badge';
+import StarRating from '@/components/StarRating';
+import { Skeleton } from '@/components/ui/skeleton';
+import { trackProductClick } from '@/integrations/supabase/client';
+import { useProducts } from '@/hooks/useProducts';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
-  const { getProduct, logProductClick } = useProducts();
+  const { useProductDetail, products, logProductClick } = useProducts();
+  const { data: product, isLoading, error } = useProductDetail(id);
   
-  const { data: product, isLoading, error } = useQuery({
-    queryKey: ['product', id],
-    queryFn: () => getProduct(id || ''),
-    enabled: !!id,
-  });
+  // Get similar products (same brand or similar rating)
+  const similarProducts = products
+    .filter(p => p.id !== id && (p.brand === product?.brand || Math.abs(p.rating - (product?.rating || 0)) < 0.5))
+    .slice(0, 3);
 
-  useEffect(() => {
-    if (error) {
-      toast.error("Error loading product details");
-      console.error(error);
-    }
-  }, [error]);
-
-  if (isLoading) {
+  if (error) {
     return (
-      <div className="py-12">
-        <div className="container mx-auto px-4">
-          <Skeleton className="h-8 w-60 mb-4" />
-          <div className="flex flex-col md:flex-row gap-8">
-            <div className="md:w-1/3 lg:w-1/4">
-              <Skeleton className="h-80 w-full" />
-            </div>
-            <div className="md:w-2/3 lg:w-3/4">
-              <Skeleton className="h-10 w-full mb-4" />
-              <Skeleton className="h-6 w-40 mb-4" />
-              <Skeleton className="h-6 w-full mb-2" />
-              <Skeleton className="h-6 w-full mb-2" />
-              <Skeleton className="h-6 w-3/4 mb-4" />
-              <div className="flex gap-4 mb-6">
-                <Skeleton className="h-10 w-40" />
-                <Skeleton className="h-10 w-40" />
-              </div>
-              <Skeleton className="h-40 w-full mb-4" />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (!product) {
-    return (
-      <div className="py-12">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-2xl font-bold mb-4">Product Not Found</h1>
-          <p className="mb-6">Sorry, we couldn't find the product you're looking for.</p>
-          <Button asChild>
-            <Link to="/products">View All Products</Link>
+      <div className="container mx-auto py-12 px-4">
+        <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-md">
+          <h2 className="text-xl font-semibold mb-2">Error Loading Product</h2>
+          <p>We couldn't load this product. It may have been removed or there was a connection issue.</p>
+          <Button asChild variant="outline" className="mt-4">
+            <Link to="/products">Back to All Products</Link>
           </Button>
         </div>
       </div>
@@ -71,147 +36,202 @@ const ProductDetail = () => {
   }
 
   const handleBuyClick = () => {
-    logProductClick(product.id);
+    if (product) {
+      logProductClick(product.id);
+    }
   };
 
   return (
-    <div className="py-12">
-      <div className="container mx-auto px-4">
-        <Button variant="ghost" className="mb-6" asChild>
-          <Link to="/products" className="flex items-center">
-            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Products
-          </Link>
-        </Button>
+    <div className="container mx-auto py-8 px-4">
+      {/* Breadcrumb */}
+      <div className="mb-6">
+        <Link to="/products" className="text-brand-600 hover:text-brand-700 flex items-center">
+          <ChevronLeft className="h-4 w-4 mr-1" />
+          Back to All Products
+        </Link>
+      </div>
 
-        <div className="flex flex-col md:flex-row gap-8 mb-12">
-          {/* Product Image */}
-          <div className="md:w-1/3 lg:w-1/4 flex-shrink-0">
-            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 flex items-center justify-center">
-              <img 
-                src={product.image || "https://placehold.co/300x400/f5f5f5/cccccc?text=No+Image"} 
-                alt={product.name} 
-                className="max-h-80 w-auto object-contain"
-              />
+      {isLoading || !product ? (
+        <div className="space-y-8">
+          <div className="flex flex-col lg:flex-row gap-8">
+            <div className="lg:w-1/3">
+              <Skeleton className="w-full h-80 rounded-lg" />
+            </div>
+            <div className="lg:w-2/3">
+              <Skeleton className="h-10 w-3/4 mb-2" />
+              <Skeleton className="h-6 w-1/2 mb-4" />
+              <Skeleton className="h-5 w-40 mb-6" />
+              <Skeleton className="h-8 w-24 mb-4" />
+              <Skeleton className="h-20 w-full mb-6" />
+              <div className="flex gap-3">
+                <Skeleton className="h-12 w-40" />
+                <Skeleton className="h-12 w-40" />
+              </div>
             </div>
           </div>
 
-          {/* Product Information */}
-          <div className="md:w-2/3 lg:w-3/4">
-            <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
-            <p className="text-gray-600 text-lg mb-4">By {product.brand}</p>
-
-            <div className="flex items-center mb-4">
-              <StarRating rating={product.rating} size={20} className="mr-3" />
-              <span className="text-lg text-gray-600">({product.review_count || 0} reviews)</span>
+          <div>
+            <Skeleton className="h-8 w-40 mb-4" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Skeleton className="h-32 w-full" />
+              <Skeleton className="h-32 w-full" />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <>
+          {/* Product Header */}
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Product Image */}
+            <div className="lg:w-1/3">
+              <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm">
+                <img
+                  src={product.image || "https://placehold.co/300x400/f5f5f5/cccccc?text=No+Image"}
+                  alt={product.name}
+                  className="w-full h-auto object-contain mx-auto"
+                  style={{ maxHeight: '400px' }}
+                />
+              </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
-              <div className="text-3xl font-bold text-gray-900">
-                ${product.price.toFixed(2)}
+            {/* Product Info */}
+            <div className="lg:w-2/3">
+              {product.rank && (
+                <Badge className="mb-3 bg-brand-600"># {product.rank} Top Rated</Badge>
+              )}
+              <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
+              <p className="text-lg text-gray-700 mb-4">by {product.brand}</p>
+              
+              <div className="flex items-center mb-6">
+                <StarRating rating={product.rating} size={20} className="mr-3" />
+                <span className="text-gray-700">
+                  {product.rating} out of 5 ({product.review_count || 0} reviews)
+                </span>
               </div>
-              <div className="flex gap-3">
+
+              <div className="text-3xl font-bold text-gray-900 mb-6">
+                ${product.price.toFixed(2)}
+                {product.price < 25 && 
+                  <Badge className="ml-3 bg-green-500">Great Value</Badge>
+                }
+              </div>
+
+              <p className="text-gray-700 mb-6">{product.description}</p>
+
+              <div className="flex flex-col sm:flex-row gap-3 mb-8">
                 <Button 
                   size="lg" 
-                  className="bg-teal-600 hover:bg-teal-700 gap-1" 
-                  onClick={handleBuyClick} 
+                  className="bg-teal-600 hover:bg-teal-700 gap-2"
+                  onClick={handleBuyClick}
                   asChild
                 >
                   <a href={product.link} target="_blank" rel="noopener noreferrer">
                     View Best Price <ExternalLink className="h-4 w-4" />
                   </a>
                 </Button>
+                
+                <Button size="lg" variant="outline">
+                  Add to Comparison
+                </Button>
               </div>
             </div>
-
-            {product.description && (
-              <div className="mb-6">
-                <h2 className="text-xl font-semibold mb-2">Description</h2>
-                <p className="text-gray-700">{product.description}</p>
-              </div>
-            )}
-          </div>
-        </div>
-
-        <Separator className="my-8" />
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          {/* Pros Section */}
-          <div>
-            <h2 className="text-xl font-semibold mb-4">What We Like</h2>
-            {product.pros && Array.isArray(product.pros) && product.pros.length > 0 ? (
-              <ul className="space-y-3">
-                {product.pros.map((pro, index) => (
-                  <li key={index} className="flex items-start">
-                    <div className="flex-shrink-0 mr-3">
-                      <Check className="h-5 w-5 text-green-500" />
-                    </div>
-                    <p className="text-gray-700">{pro}</p>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-gray-500 italic">No specific benefits listed.</p>
-            )}
           </div>
 
-          {/* Cons Section */}
-          <div>
-            <h2 className="text-xl font-semibold mb-4">Things to Consider</h2>
-            {product.cons && Array.isArray(product.cons) && product.cons.length > 0 ? (
-              <ul className="space-y-3">
-                {product.cons.map((con, index) => (
-                  <li key={index} className="flex items-start">
-                    <div className="flex-shrink-0 mr-3">
-                      <AlertTriangle className="h-5 w-5 text-amber-500" />
-                    </div>
-                    <p className="text-gray-700">{con}</p>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-gray-500 italic">No specific drawbacks listed.</p>
-            )}
-          </div>
-        </div>
+          <Separator className="my-10" />
 
-        {/* Features Section */}
-        {product.features && Array.isArray(product.features) && product.features.length > 0 && (
-          <>
-            <Separator className="my-8" />
+          {/* Tabs for Features/Pros/Cons */}
+          <Tabs defaultValue="features" className="mb-10">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="features">Features</TabsTrigger>
+              <TabsTrigger value="pros">Pros</TabsTrigger>
+              <TabsTrigger value="cons">Cons</TabsTrigger>
+            </TabsList>
             
-            <div className="mb-12">
-              <h2 className="text-2xl font-semibold mb-4">Key Features</h2>
-              <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {product.features.map((feature, index) => (
-                  <li key={index} className="bg-gray-50 p-4 rounded-lg">
-                    <p className="text-gray-800">{feature}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </>
-        )}
+            <TabsContent value="features" className="mt-6">
+              <h2 className="text-xl font-semibold mb-4">Key Features</h2>
+              {product.features && product.features.length > 0 ? (
+                <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {product.features.map((feature, index) => (
+                    <li key={index} className="flex items-start">
+                      <div className="bg-brand-100 p-1 rounded-full mr-3 mt-1">
+                        <Star className="h-4 w-4 text-brand-600" />
+                      </div>
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-gray-500">No specific features listed for this product.</p>
+              )}
+            </TabsContent>
+            
+            <TabsContent value="pros" className="mt-6">
+              <h2 className="text-xl font-semibold mb-4">Pros</h2>
+              {product.pros && product.pros.length > 0 ? (
+                <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {product.pros.map((pro, index) => (
+                    <li key={index} className="flex items-start">
+                      <div className="bg-green-100 p-1 rounded-full mr-3 mt-1">
+                        <Check className="h-4 w-4 text-green-600" />
+                      </div>
+                      <span>{pro}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-gray-500">No pros have been listed for this product.</p>
+              )}
+            </TabsContent>
+            
+            <TabsContent value="cons" className="mt-6">
+              <h2 className="text-xl font-semibold mb-4">Cons</h2>
+              {product.cons && product.cons.length > 0 ? (
+                <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {product.cons.map((con, index) => (
+                    <li key={index} className="flex items-start">
+                      <div className="bg-red-100 p-1 rounded-full mr-3 mt-1">
+                        <X className="h-4 w-4 text-red-600" />
+                      </div>
+                      <span>{con}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-gray-500">No cons have been listed for this product.</p>
+              )}
+            </TabsContent>
+          </Tabs>
 
-        {/* Related Products Section */}
-        <div className="bg-gray-50 p-8 rounded-xl text-center">
-          <h2 className="text-2xl font-semibold mb-4">Looking for alternatives?</h2>
-          <p className="text-gray-700 mb-6">
-            Check out our top picks of quercetin supplements to find the best option for your needs.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild>
-              <Link to="/products/top-picks">
-                View Top Picks
-              </Link>
-            </Button>
-            <Button variant="outline" asChild>
-              <Link to="/products/comparison">
-                Compare All Products
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </div>
+          {/* Similar Products */}
+          {similarProducts.length > 0 && (
+            <div className="mt-12">
+              <h2 className="text-2xl font-semibold mb-6">Similar Products You Might Like</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {similarProducts.map(similar => (
+                  <Link 
+                    key={similar.id} 
+                    to={`/products/${similar.id}`}
+                    className="bg-white p-5 rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <div className="h-40 flex items-center justify-center mb-4">
+                      <img
+                        src={similar.image || "https://placehold.co/300x400/f5f5f5/cccccc?text=No+Image"}
+                        alt={similar.name}
+                        className="max-h-full w-auto object-contain"
+                      />
+                    </div>
+                    <h3 className="font-medium mb-2">{similar.name}</h3>
+                    <div className="flex items-center justify-between">
+                      <StarRating rating={similar.rating} size={14} />
+                      <span className="font-semibold">${similar.price.toFixed(2)}</span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 };
