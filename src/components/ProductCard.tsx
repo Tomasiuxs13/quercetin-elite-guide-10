@@ -35,28 +35,61 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const displayPros = product.pros && Array.isArray(product.pros) ? product.pros.slice(0, 2) : [];
   const displayCons = product.cons && Array.isArray(product.cons) ? product.cons.slice(0, 2) : [];
 
+  // Get appropriate rank badge styling
+  const getRankBadgeStyle = (rank: number | null) => {
+    if (!rank) return {};
+    
+    if (rank === 1) return { 
+      className: "absolute -top-3 -left-3 bg-amber-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold shadow-md z-10 border-2 border-white",
+      icon: <Award className="h-5 w-5 absolute -top-0.5 left-3.5 text-white" />
+    };
+    if (rank === 2) return { 
+      className: "absolute -top-3 -left-3 bg-gray-400 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold shadow-md z-10 border-2 border-white",
+      icon: <Award className="h-5 w-5 absolute -top-0.5 left-3.5 text-white" /> 
+    };
+    if (rank === 3) return { 
+      className: "absolute -top-3 -left-3 bg-amber-700 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold shadow-md z-10 border-2 border-white",
+      icon: <Award className="h-5 w-5 absolute -top-0.5 left-3.5 text-white" />
+    };
+
+    return { 
+      className: "absolute -top-3 -left-3 bg-brand-600 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold shadow-md z-10 border-2 border-white"
+    };
+  };
+
+  // Get rank styling
+  const rankStyle = getRankBadgeStyle(product.rank);
+
   return (
-    <Card className="overflow-hidden transition-all duration-200 hover:shadow-lg">
+    <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl relative group border border-gray-200 hover:border-brand-300 rounded-xl">
       {showRank && product.rank && (
-        <div className="absolute -top-3 -left-3 bg-brand-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-md z-10">
-          #{product.rank}
+        <div className={rankStyle.className}>
+          {rankStyle.icon}
+          <span className="translate-y-0.5">{product.rank}</span>
         </div>
       )}
       
       <CardContent className="p-0">
         <div className="flex flex-col md:flex-row md:items-start">
-          <div className="md:w-32 lg:w-40 flex-shrink-0 bg-gray-50 p-4 flex items-center justify-center">
+          <div className="md:w-36 lg:w-44 flex-shrink-0 bg-gray-50 p-4 flex items-center justify-center relative">
             <img 
               src={product.image || "https://placehold.co/300x400/f5f5f5/cccccc?text=No+Image"} 
               alt={product.name} 
-              className="w-full object-contain h-40 md:h-32 transition-transform hover:scale-105"
+              className="w-full object-contain h-44 md:h-36 transition-all duration-300 group-hover:scale-105"
             />
+            {product.price < 25 && (
+              <Badge className="absolute top-2 right-2 bg-green-500 hover:bg-green-600">
+                Best Value
+              </Badge>
+            )}
           </div>
           
           <div className="flex-grow p-6">
-            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2 border-b pb-3 mb-3">
+            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2 border-b pb-3 mb-4">
               <div>
-                <h3 className="text-xl font-semibold mb-1">{product.name}</h3>
+                <h3 className="text-xl font-semibold mb-1 group-hover:text-brand-600 transition-colors">
+                  {product.name}
+                </h3>
                 <p className="text-gray-600 text-sm mb-2">By {product.brand}</p>
               </div>
               
@@ -66,14 +99,21 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 </div>
                 <div className="flex items-center gap-1">
                   {product.price < 25 && <Badge className="bg-green-500 hover:bg-green-600">Great Value</Badge>}
-                  {product.rating >= 4.8 && <Badge className="bg-brand-600 hover:bg-brand-700">Top Rated</Badge>}
+                  {product.rating >= 4.8 && (
+                    <Badge className="bg-brand-600 hover:bg-brand-700 flex items-center gap-1">
+                      <Shield className="h-3 w-3" />
+                      Top Rated
+                    </Badge>
+                  )}
                 </div>
               </div>
             </div>
             
             <div className="flex items-center mb-4">
               <StarRating rating={product.rating} className="mr-2" />
-              <span className="text-sm text-gray-600">{product.rating.toFixed(1)} ({product.review_count || 0} reviews)</span>
+              <span className="text-sm text-gray-600">{product.rating.toFixed(1)} 
+                <span className="text-gray-400">({product.review_count || 0} reviews)</span>
+              </span>
             </div>
             
             {variant !== 'compact' && product.description && (
@@ -83,7 +123,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             )}
             
             {variant !== 'compact' && (displayPros.length > 0 || displayCons.length > 0) && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5 bg-gray-50 rounded-md p-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5 bg-gray-50 rounded-md p-4">
                 {displayPros.length > 0 && (
                   <div>
                     <h4 className="text-sm font-medium text-gray-700 mb-2 flex items-center">
@@ -117,15 +157,15 @@ const ProductCard: React.FC<ProductCardProps> = ({
             )}
             
             <div className="flex flex-col sm:flex-row gap-3 mt-auto">
-              <Button asChild className="bg-teal-600 hover:bg-teal-700 gap-1 transition-colors" onClick={handleClick}>
-                <a href={product.link} target="_blank" rel="noopener noreferrer">
-                  View Best Price <ExternalLink className="h-4 w-4" />
+              <Button asChild className="bg-teal-600 hover:bg-teal-700 gap-1 transition-all shadow-sm hover:shadow-md" onClick={handleClick}>
+                <a href={product.link} target="_blank" rel="noopener noreferrer" className="flex items-center">
+                  View Best Price <ExternalLink className="h-4 w-4 ml-1" />
                 </a>
               </Button>
               
-              <Button variant="outline" asChild className="border-gray-300 hover:bg-gray-50 transition-colors">
-                <Link to={`/products/${product.id}`} className="gap-1">
-                  Read Full Review <ArrowRight className="h-4 w-4" />
+              <Button variant="outline" asChild className="border-gray-300 hover:bg-gray-50 transition-all group">
+                <Link to={`/products/${product.id}`} className="gap-1 flex items-center">
+                  Read Full Review <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-0.5 transition-transform" />
                 </Link>
               </Button>
             </div>
