@@ -1,7 +1,7 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ChevronLeft, Check, X, ExternalLink, Star } from 'lucide-react';
+import { ChevronLeft, Check, X, ExternalLink, Star, ShoppingCart, Heart, Award, ThumbsUp, Shield, BadgeCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
@@ -10,16 +10,44 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { trackProductClick } from '@/integrations/supabase/client';
 import { useProducts } from '@/hooks/useProducts';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ProductCard from '@/components/ProductCard';
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { useProductDetail, products, logProductClick } = useProducts();
   const { data: product, isLoading, error } = useProductDetail(id);
+  const [showSticky, setShowSticky] = useState(false);
   
   // Get similar products (same brand or similar rating)
   const similarProducts = products
     .filter(p => p.id !== id && (p.brand === product?.brand || Math.abs(p.rating - (product?.rating || 0)) < 0.5))
     .slice(0, 3);
+
+  // Get alternative products (different brand but similar rating)
+  const alternativeProducts = products
+    .filter(p => p.id !== id && p.brand !== product?.brand && Math.abs(p.rating - (product?.rating || 0)) < 0.8)
+    .sort((a, b) => b.rating - a.rating)
+    .slice(0, 3);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShowSticky(true);
+      } else {
+        setShowSticky(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleBuyClick = () => {
+    if (product) {
+      logProductClick(product.id);
+    }
+  };
 
   if (error) {
     return (
@@ -34,12 +62,6 @@ const ProductDetail = () => {
       </div>
     );
   }
-
-  const handleBuyClick = () => {
-    if (product) {
-      logProductClick(product.id);
-    }
-  };
 
   return (
     <div className="container mx-auto py-8 px-4">
@@ -80,11 +102,68 @@ const ProductDetail = () => {
         </div>
       ) : (
         <>
+          {/* Sticky CTA that appears when scrolling */}
+          {showSticky && (
+            <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-40 py-3 px-4 md:py-0 transform transition-transform duration-300">
+              <div className="container mx-auto">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-4">
+                    <img 
+                      src={product.image} 
+                      alt={product.name} 
+                      className="h-12 w-12 object-contain hidden sm:block" 
+                    />
+                    <div>
+                      <h3 className="font-medium text-sm md:text-base line-clamp-1">{product.name}</h3>
+                      <div className="flex items-center">
+                        <StarRating rating={product.rating} size={12} className="mr-2" />
+                        <span className="text-xs">${product.price.toFixed(2)}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button 
+                      size="sm" 
+                      className="bg-teal-600 hover:bg-teal-700 gap-1 md:px-6"
+                      onClick={handleBuyClick}
+                      asChild
+                    >
+                      <a href={product.link} target="_blank" rel="noopener noreferrer">
+                        <ShoppingCart className="h-4 w-4 md:mr-1" />
+                        <span className="hidden md:inline">Buy Now</span>
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Product Header */}
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Product Image */}
             <div className="lg:w-1/3">
-              <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm">
+              <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm relative">
+                {product.rank && (
+                  <div className="absolute -top-4 -left-4 z-10">
+                    {product.rank === 1 ? (
+                      <div className="bg-amber-500 text-white w-16 h-16 rounded-full flex flex-col items-center justify-center font-bold border-2 border-white shadow-lg">
+                        <Award className="h-6 w-6" />
+                        <span className="text-xs font-medium">Best Pick</span>
+                      </div>
+                    ) : product.rank === 2 ? (
+                      <div className="bg-gray-400 text-white w-16 h-16 rounded-full flex flex-col items-center justify-center font-bold border-2 border-white shadow-lg">
+                        <Award className="h-6 w-6" />
+                        <span className="text-xs font-medium">Runner Up</span>
+                      </div>
+                    ) : (
+                      <div className="bg-amber-700 text-white w-16 h-16 rounded-full flex flex-col items-center justify-center font-bold border-2 border-white shadow-lg">
+                        <Badge className="h-6 w-6" />
+                        <span className="text-xs font-medium">#{product.rank}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
                 <img
                   src={product.image || "https://placehold.co/300x400/f5f5f5/cccccc?text=No+Image"}
                   alt={product.name}
@@ -92,13 +171,44 @@ const ProductDetail = () => {
                   style={{ maxHeight: '400px' }}
                 />
               </div>
+
+              {/* Trust Signals */}
+              <div className="bg-gray-50 p-4 rounded-lg mt-4 border border-gray-100">
+                <h3 className="text-sm font-semibold mb-3 flex items-center">
+                  <Shield className="h-4 w-4 text-brand-600 mr-2" />
+                  Why Trust Our Review
+                </h3>
+                <ul className="text-sm space-y-2">
+                  <li className="flex items-start">
+                    <BadgeCheck className="h-4 w-4 text-green-500 mr-2 mt-0.5" />
+                    <span>Independently tested for quality</span>
+                  </li>
+                  <li className="flex items-start">
+                    <BadgeCheck className="h-4 w-4 text-green-500 mr-2 mt-0.5" />
+                    <span>No sponsored content or paid placement</span>
+                  </li>
+                  <li className="flex items-start">
+                    <BadgeCheck className="h-4 w-4 text-green-500 mr-2 mt-0.5" />
+                    <span>Updated {new Date().toLocaleDateString('en-US', {year: 'numeric', month: 'long'})}</span>
+                  </li>
+                </ul>
+              </div>
             </div>
 
             {/* Product Info */}
             <div className="lg:w-2/3">
-              {product.rank && (
-                <Badge className="mb-3 bg-brand-600"># {product.rank} Top Rated</Badge>
-              )}
+              <div className="flex flex-wrap gap-2 mb-3">
+                {product.rank && (
+                  <Badge className="bg-brand-600"># {product.rank} Top Rated</Badge>
+                )}
+                {product.price < 25 && 
+                  <Badge className="bg-green-500">Great Value</Badge>
+                }
+                {product.rating >= 4.8 && (
+                  <Badge className="bg-amber-600">Top Rated</Badge>
+                )}
+              </div>
+
               <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
               <p className="text-lg text-gray-700 mb-4">by {product.brand}</p>
               
@@ -111,10 +221,17 @@ const ProductDetail = () => {
 
               <div className="text-3xl font-bold text-gray-900 mb-6">
                 ${product.price.toFixed(2)}
-                {product.price < 25 && 
-                  <Badge className="ml-3 bg-green-500">Great Value</Badge>
-                }
               </div>
+
+              {/* Alert for special offers */}
+              {product.price < 30 && (
+                <Alert className="mb-6 bg-green-50 border-green-200">
+                  <ThumbsUp className="h-4 w-4 text-green-600" />
+                  <AlertDescription className="text-green-800">
+                    <span className="font-semibold">Limited Time Offer:</span> Free shipping available with this product!
+                  </AlertDescription>
+                </Alert>
+              )}
 
               <p className="text-gray-700 mb-6">{product.description}</p>
 
@@ -126,14 +243,33 @@ const ProductDetail = () => {
                   asChild
                 >
                   <a href={product.link} target="_blank" rel="noopener noreferrer">
-                    View Best Price <ExternalLink className="h-4 w-4" />
+                    <ShoppingCart className="h-5 w-5" /> View Best Price
                   </a>
                 </Button>
                 
-                <Button size="lg" variant="outline">
+                <Button size="lg" variant="outline" className="group">
+                  <Heart className="h-5 w-5 mr-2 group-hover:text-red-500 transition-colors" />
                   Add to Comparison
                 </Button>
               </div>
+
+              {/* Key Benefits Summary */}
+              {product.pros && product.pros.length > 0 && (
+                <div className="bg-green-50 rounded-lg p-4 mb-6 border border-green-100">
+                  <h3 className="font-semibold text-green-800 mb-2 flex items-center">
+                    <ThumbsUp className="h-4 w-4 mr-2" />
+                    Key Benefits
+                  </h3>
+                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    {product.pros.slice(0, 4).map((pro, index) => (
+                      <li key={index} className="flex items-center">
+                        <Check className="h-4 w-4 text-green-600 mr-2 flex-shrink-0" />
+                        <span className="text-sm">{pro}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
 
@@ -202,30 +338,80 @@ const ProductDetail = () => {
             </TabsContent>
           </Tabs>
 
+          {/* Comparison Section */}
+          <div className="mb-12 bg-gray-50 rounded-lg p-6 border border-gray-100">
+            <h2 className="text-2xl font-semibold mb-6">How It Compares</h2>
+            <div className="overflow-x-auto">
+              <table className="min-w-full bg-white rounded-lg">
+                <thead>
+                  <tr className="bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    <th className="py-3 px-4 border-b">Product</th>
+                    <th className="py-3 px-4 border-b">Rating</th>
+                    <th className="py-3 px-4 border-b">Price</th>
+                    <th className="py-3 px-4 border-b">Key Benefit</th>
+                    <th className="py-3 px-4 border-b">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* Current Product */}
+                  <tr className="bg-green-50 border-l-4 border-green-400">
+                    <td className="py-3 px-4 border-b flex items-center">
+                      <img src={product.image} alt={product.name} className="h-10 w-10 object-contain mr-2" />
+                      <span className="font-medium">{product.name}</span>
+                    </td>
+                    <td className="py-3 px-4 border-b">
+                      <StarRating rating={product.rating} size={14} />
+                    </td>
+                    <td className="py-3 px-4 border-b font-medium">${product.price.toFixed(2)}</td>
+                    <td className="py-3 px-4 border-b">
+                      {product.pros && product.pros.length > 0 ? product.pros[0] : "N/A"}
+                    </td>
+                    <td className="py-3 px-4 border-b">
+                      <Button size="sm" asChild>
+                        <a href={product.link} target="_blank" rel="noopener noreferrer">
+                          Current Pick
+                        </a>
+                      </Button>
+                    </td>
+                  </tr>
+
+                  {/* Alternative Products */}
+                  {alternativeProducts.map(alt => (
+                    <tr key={alt.id}>
+                      <td className="py-3 px-4 border-b flex items-center">
+                        <img src={alt.image} alt={alt.name} className="h-10 w-10 object-contain mr-2" />
+                        <Link to={`/products/${alt.id}`} className="hover:text-brand-600 transition-colors">
+                          {alt.name}
+                        </Link>
+                      </td>
+                      <td className="py-3 px-4 border-b">
+                        <StarRating rating={alt.rating} size={14} />
+                      </td>
+                      <td className="py-3 px-4 border-b">${alt.price.toFixed(2)}</td>
+                      <td className="py-3 px-4 border-b">
+                        {alt.pros && alt.pros.length > 0 ? alt.pros[0] : "N/A"}
+                      </td>
+                      <td className="py-3 px-4 border-b">
+                        <Button size="sm" variant="outline" asChild>
+                          <Link to={`/products/${alt.id}`}>
+                            Compare
+                          </Link>
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           {/* Similar Products */}
           {similarProducts.length > 0 && (
             <div className="mt-12">
               <h2 className="text-2xl font-semibold mb-6">Similar Products You Might Like</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {similarProducts.map(similar => (
-                  <Link 
-                    key={similar.id} 
-                    to={`/products/${similar.id}`}
-                    className="bg-white p-5 rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-shadow"
-                  >
-                    <div className="h-40 flex items-center justify-center mb-4">
-                      <img
-                        src={similar.image || "https://placehold.co/300x400/f5f5f5/cccccc?text=No+Image"}
-                        alt={similar.name}
-                        className="max-h-full w-auto object-contain"
-                      />
-                    </div>
-                    <h3 className="font-medium mb-2">{similar.name}</h3>
-                    <div className="flex items-center justify-between">
-                      <StarRating rating={similar.rating} size={14} />
-                      <span className="font-semibold">${similar.price.toFixed(2)}</span>
-                    </div>
-                  </Link>
+                  <ProductCard key={similar.id} product={similar} variant="compact" />
                 ))}
               </div>
             </div>
