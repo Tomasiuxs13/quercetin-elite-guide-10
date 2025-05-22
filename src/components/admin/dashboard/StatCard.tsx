@@ -19,7 +19,7 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, description, icon }) 
       <CardContent>
         <div className="flex items-center justify-between">
           <div className="flex items-center text-sm">{description}</div>
-          <div className="text-brand-600">{icon}</div>
+          {icon}
         </div>
       </CardContent>
     </Card>

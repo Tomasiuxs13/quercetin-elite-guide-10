@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { LucideIcon } from 'lucide-react';
 
 interface AdminNavCardProps {
   title: string;
@@ -36,9 +37,7 @@ const AdminNavCard: React.FC<AdminNavCardProps> = ({
         )}
         {badge && (
           <div className="mb-2">
-            <Badge variant={badge.variant || "secondary"} className={
-              badge.variant === "secondary" ? "bg-amber-100 hover:bg-amber-200 text-amber-800" : ""
-            }>
+            <Badge variant={badge.variant || "secondary"} className="bg-amber-100 text-amber-800 text-xs">
               {badge.text}
             </Badge>
           </div>

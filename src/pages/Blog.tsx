@@ -1,26 +1,91 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Loader2 } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Badge } from '@/components/ui/badge';
-import { Skeleton } from '@/components/ui/skeleton';
-import { useBlogPosts } from '@/hooks/useBlogPosts';
+
+// Sample blog post data
+const blogPosts = [
+  {
+    id: 1,
+    title: 'The Science Behind Quercetin: How It Works in Your Body',
+    excerpt: 'Explore the mechanisms through which quercetin exerts its antioxidant and anti-inflammatory effects in the human body.',
+    date: 'May 15, 2025',
+    author: 'Dr. Sarah Johnson',
+    category: 'Research',
+    image: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80',
+    slug: 'science-behind-quercetin'
+  },
+  {
+    id: 2,
+    title: 'Quercetin and Seasonal Allergies: What the Research Shows',
+    excerpt: 'Learn how quercetin supplements may help reduce allergy symptoms and which formulations work best for different allergy types.',
+    date: 'May 3, 2025',
+    author: 'Emma Richards, RD',
+    category: 'Health Benefits',
+    image: 'https://images.unsplash.com/photo-1607326957431-29d25d2b386f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
+    slug: 'quercetin-seasonal-allergies'
+  },
+  {
+    id: 3,
+    title: 'Combining Quercetin with Vitamin C: Synergistic Effects',
+    excerpt: 'Discover why many supplements pair quercetin with vitamin C and how this combination enhances the benefits of both compounds.',
+    date: 'April 22, 2025',
+    author: 'Dr. Michael Chen',
+    category: 'Supplement Guide',
+    image: 'https://images.unsplash.com/photo-1606939232603-acc00ee2e581?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80',
+    slug: 'quercetin-vitamin-c-synergy'
+  },
+  {
+    id: 4,
+    title: 'Quercetin for Athletes: Recovery and Performance Benefits',
+    excerpt: 'Explore how quercetin may help reduce exercise-induced inflammation and support recovery for both professional and recreational athletes.',
+    date: 'April 10, 2025',
+    author: 'James Wilson, MS',
+    category: 'Performance',
+    image: 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80',
+    slug: 'quercetin-for-athletes'
+  },
+  {
+    id: 5,
+    title: 'Quercetin-Rich Foods vs. Supplements: Which Is Better?',
+    excerpt: 'Compare the bioavailability and practical benefits of dietary quercetin sources with supplement forms to determine the best approach for your needs.',
+    date: 'March 28, 2025',
+    author: 'Olivia Martinez, RDN',
+    category: 'Nutrition',
+    image: 'https://images.unsplash.com/photo-1610348725531-843dff563e2c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80',
+    slug: 'quercetin-foods-vs-supplements'
+  },
+  {
+    id: 6,
+    title: 'Quercetin Supplement Quality: How to Spot the Best Products',
+    excerpt: 'Learn the key indicators of high-quality quercetin supplements and red flags to watch for when shopping for effective products.',
+    date: 'March 15, 2025',
+    author: 'Robert Thompson',
+    category: 'Product Guide',
+    image: 'https://images.unsplash.com/photo-1626963781637-dc8e0140eb0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80',
+    slug: 'quercetin-supplement-quality'
+  }
+];
+
+// Categories for filtering
+const categories = [
+  'All Posts',
+  'Research',
+  'Health Benefits',
+  'Supplement Guide',
+  'Nutrition',
+  'Performance',
+  'Product Guide'
+];
 
 const Blog = () => {
-  const { useFetchPosts, useFetchTags } = useBlogPosts();
-  const { data: posts = [], isLoading: isLoadingPosts } = useFetchPosts({ publishedOnly: true });
-  const { data: tags = [], isLoading: isLoadingTags } = useFetchTags();
-  const [activeCategory, setActiveCategory] = useState('All Posts');
+  const [activeCategory, setActiveCategory] = React.useState('All Posts');
 
-  // Get unique categories for the filter
-  const categories = ['All Posts', ...new Set(posts.map(post => post.category).filter(Boolean))];
-
-  // Filter posts by selected category
   const filteredPosts = activeCategory === 'All Posts'
-    ? posts
-    : posts.filter(post => post.category === activeCategory);
+    ? blogPosts
+    : blogPosts.filter(post => post.category === activeCategory);
 
   return (
     <div className="py-12">
@@ -33,101 +98,52 @@ const Blog = () => {
         </div>
 
         {/* Category Filters */}
-        {isLoadingTags ? (
-          <div className="mb-8 flex flex-wrap gap-2 justify-center">
-            {[...Array(6)].map((_, i) => (
-              <Skeleton key={i} className="h-9 w-24 rounded-full" />
-            ))}
-          </div>
-        ) : (
-          <div className="mb-8 flex flex-wrap gap-2 justify-center">
-            {categories.map((category) => (
-              <Button
-                key={category}
-                variant={activeCategory === category ? "default" : "outline"}
-                size="sm"
-                onClick={() => setActiveCategory(category)}
-                className="rounded-full"
-              >
-                {category}
-              </Button>
-            ))}
-          </div>
-        )}
+        <div className="mb-8 flex flex-wrap gap-2 justify-center">
+          {categories.map((category) => (
+            <Button
+              key={category}
+              variant={activeCategory === category ? "default" : "outline"}
+              size="sm"
+              onClick={() => setActiveCategory(category)}
+              className="rounded-full"
+            >
+              {category}
+            </Button>
+          ))}
+        </div>
 
         {/* Blog Grid */}
-        {isLoadingPosts ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-white rounded-lg overflow-hidden shadow-sm border">
-                <Skeleton className="h-48 w-full" />
-                <div className="p-6">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Skeleton className="h-5 w-20" />
-                    <Skeleton className="h-5 w-5" />
-                    <Skeleton className="h-5 w-24" />
-                  </div>
-                  <Skeleton className="h-7 w-full mb-2" />
-                  <Skeleton className="h-4 w-full mb-1" />
-                  <Skeleton className="h-4 w-3/4 mb-4" />
-                  <div className="flex justify-between items-center">
-                    <Skeleton className="h-4 w-32" />
-                    <Skeleton className="h-4 w-24" />
-                  </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          {filteredPosts.map((post) => (
+            <div key={post.id} className="bg-white rounded-lg overflow-hidden shadow-sm border hover:shadow-md transition-shadow">
+              <div className="h-48 overflow-hidden">
+                <img 
+                  src={post.image} 
+                  alt={post.title} 
+                  className="w-full h-full object-cover transform hover:scale-105 transition-transform"
+                />
+              </div>
+              <div className="p-6">
+                <div className="flex items-center text-sm text-gray-500 mb-2">
+                  <span>{post.date}</span>
+                  <Separator orientation="vertical" className="mx-2 h-4" />
+                  <span>{post.category}</span>
+                </div>
+                <h3 className="text-xl font-semibold mb-2">{post.title}</h3>
+                <p className="text-gray-600 mb-4">{post.excerpt}</p>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-500">By {post.author}</span>
+                  <Button variant="link" asChild className="p-0 h-auto flex items-center">
+                    <Link to={`/blog/${post.slug}`}>
+                      Read More
+                      <ArrowRight className="ml-1 h-4 w-4" />
+                    </Link>
+                  </Button>
                 </div>
               </div>
-            ))}
-          </div>
-        ) : filteredPosts.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-            {filteredPosts.map((post) => (
-              <div key={post.id} className="bg-white rounded-lg overflow-hidden shadow-sm border hover:shadow-md transition-shadow">
-                <div className="h-48 overflow-hidden">
-                  <img 
-                    src={post.image || "https://placehold.co/800x450/f5f5f5/cccccc?text=No+Image"} 
-                    alt={post.title} 
-                    className="w-full h-full object-cover transform hover:scale-105 transition-transform"
-                  />
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center text-sm text-gray-500 mb-2">
-                    <span>{new Date(post.published_at || post.created_at).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}</span>
-                    <Separator orientation="vertical" className="mx-2 h-4" />
-                    <span>{post.category}</span>
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">{post.title}</h3>
-                  <p className="text-gray-600 mb-4">{post.excerpt}</p>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-500">
-                      By {post.author?.full_name || "Admin"}
-                    </span>
-                    <Button variant="link" asChild className="p-0 h-auto flex items-center">
-                      <Link to={`/blog/${post.slug}`}>
-                        Read More
-                        <ArrowRight className="ml-1 h-4 w-4" />
-                      </Link>
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12 max-w-md mx-auto">
-            <p className="text-lg text-gray-600 mb-4">
-              No blog posts found for this category.
-            </p>
-            {activeCategory !== 'All Posts' && (
-              <Button onClick={() => setActiveCategory('All Posts')}>
-                View All Posts
-              </Button>
-            )}
-          </div>
-        )}
+            </div>
+          ))}
+        </div>
 
         {/* Newsletter Signup */}
         <div className="bg-brand-50 p-8 rounded-xl max-w-4xl mx-auto text-center">
