@@ -14,6 +14,8 @@ import Dashboard from "./pages/admin/Dashboard";
 import Products from "./pages/admin/Products";
 import Users from "./pages/admin/Users";
 import Settings from "./pages/admin/Settings";
+import BlogPosts from "./pages/admin/BlogPosts";
+import BlogEditor from "./pages/admin/BlogEditor";
 import Auth from "./pages/Auth";
 import Benefits from "./pages/Benefits";
 import FAQ from "./pages/FAQ";
@@ -55,7 +57,9 @@ const App = () => (
                 <Route path="products" element={<Products />} />
                 <Route path="users" element={<Users />} />
                 <Route path="settings" element={<Settings />} />
-                {/* More admin routes will be added later */}
+                <Route path="blog" element={<BlogPosts />} />
+                <Route path="blog/new" element={<BlogEditor />} />
+                <Route path="blog/edit/:id" element={<BlogEditor />} />
               </Route>
             </Route>
             

@@ -58,3 +58,24 @@ export const trackPromotionClick = async (productId: string, promotionArea: stri
     console.error('Failed to track promotion click:', err);
   }
 };
+
+// Helper function to track blog post views
+export const trackBlogView = async (blogId: string, source: string = 'unknown') => {
+  try {
+    const { error } = await (supabase as any)
+      .from('blog_views')
+      .insert({
+        blog_post_id: blogId,
+        referrer: document.referrer || null,
+        user_agent: navigator.userAgent || null,
+        source: source
+      });
+      
+    if (error) {
+      console.error('Error tracking blog view:', error);
+    }
+  } catch (err) {
+    console.error('Failed to track blog view:', err);
+  }
+};
+

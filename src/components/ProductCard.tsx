@@ -43,23 +43,23 @@ const ProductCard: React.FC<ProductCardProps> = ({
     if (!rank) return {};
     
     if (rank === 1) return { 
-      className: "absolute -top-6 -left-6 bg-amber-500 text-white w-14 h-14 rounded-full flex flex-col items-center justify-center font-bold shadow-lg z-30 border-2 border-white transform translate-x-2 translate-y-2",
+      className: "absolute -top-6 -left-6 bg-amber-500 text-white w-14 h-14 rounded-full flex flex-col items-center justify-center font-bold shadow-lg z-10 border-2 border-white transform translate-x-2 translate-y-2",
       icon: <Medal className="h-5 w-5 text-white mb-0.5" />,
       label: "Best Pick"
     };
     if (rank === 2) return { 
-      className: "absolute -top-6 -left-6 bg-gray-400 text-white w-14 h-14 rounded-full flex flex-col items-center justify-center font-bold shadow-lg z-30 border-2 border-white transform translate-x-2 translate-y-2",
+      className: "absolute -top-6 -left-6 bg-gray-400 text-white w-14 h-14 rounded-full flex flex-col items-center justify-center font-bold shadow-lg z-10 border-2 border-white transform translate-x-2 translate-y-2",
       icon: <Medal className="h-5 w-5 text-white mb-0.5" />,
       label: "Runner Up"
     };
     if (rank === 3) return { 
-      className: "absolute -top-6 -left-6 bg-amber-700 text-white w-14 h-14 rounded-full flex flex-col items-center justify-center font-bold shadow-lg z-30 border-2 border-white transform translate-x-2 translate-y-2",
+      className: "absolute -top-6 -left-6 bg-amber-700 text-white w-14 h-14 rounded-full flex flex-col items-center justify-center font-bold shadow-lg z-10 border-2 border-white transform translate-x-2 translate-y-2",
       icon: <Medal className="h-5 w-5 text-white mb-0.5" />,
       label: "3rd Place"
     };
 
     return { 
-      className: "absolute -top-6 -left-6 bg-brand-600 text-white w-14 h-14 rounded-full flex items-center justify-center font-bold shadow-lg z-30 border-2 border-white transform translate-x-2 translate-y-2"
+      className: "absolute -top-6 -left-6 bg-brand-600 text-white w-14 h-14 rounded-full flex items-center justify-center font-bold shadow-lg z-10 border-2 border-white transform translate-x-2 translate-y-2"
     };
   };
 
@@ -84,7 +84,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               className="w-full object-contain h-44 md:h-36 transition-all duration-300 group-hover:scale-105"
             />
             {product.price < 25 && (
-              <Badge className="absolute top-2 right-2 bg-green-500 hover:bg-green-600">
+              <Badge className="absolute top-2 right-2 bg-green-500 hover:bg-green-600 z-10">
                 Best Value
               </Badge>
             )}
@@ -104,9 +104,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
                   ${product.price.toFixed(2)}
                 </div>
                 <div className="flex items-center gap-1">
-                  {product.price < 25 && <Badge className="bg-green-500 hover:bg-green-600">Great Value</Badge>}
+                  {product.price < 25 && <Badge className="bg-green-500 hover:bg-green-600 z-10">Great Value</Badge>}
                   {product.rating >= 4.8 && (
-                    <Badge className="bg-brand-600 hover:bg-brand-700 flex items-center gap-1">
+                    <Badge className="bg-brand-600 hover:bg-brand-700 flex items-center gap-1 z-10">
                       <Shield className="h-3 w-3" />
                       Top Rated
                     </Badge>
