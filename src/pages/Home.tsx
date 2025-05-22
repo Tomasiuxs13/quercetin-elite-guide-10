@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronRight, Check } from 'lucide-react';
@@ -53,10 +54,24 @@ const faqs = [
 ];
 
 const Home = () => {
-  const { topProducts, isLoading } = useProducts();
+  const { products, isLoading } = useProducts();
+  
+  // Get ranked products instead of top rated
+  const rankedProducts = React.useMemo(() => {
+    return [...products]
+      .sort((a, b) => {
+        // Sort by rank first (if available)
+        if (a.rank && b.rank) return a.rank - b.rank;
+        if (a.rank) return -1; // If only a has rank, prioritize it
+        if (b.rank) return 1;  // If only b has rank, prioritize it
+        // Fall back to rating if no rank is available
+        return b.rating - a.rating;
+      })
+      .slice(0, 5); // Get top 5 ranked products
+  }, [products]);
   
   // Featured product is the top ranked one
-  const featuredProduct = topProducts[0];
+  const featuredProduct = rankedProducts[0];
 
   return (
     <div>
@@ -129,7 +144,9 @@ const Home = () => {
                       />
                     </div>
                     <div>
-                      <div className="text-sm text-brand-600 font-medium">#1 TOP RATED</div>
+                      <div className="text-sm text-brand-600 font-medium">
+                        {featuredProduct.rank ? `#${featuredProduct.rank} TOP RATED` : "TOP RATED"}
+                      </div>
                       <h3 className="font-bold text-lg">{featuredProduct.name}</h3>
                       <div className="flex items-center">
                         <StarRating rating={featuredProduct.rating} size={14} className="mr-2" />
@@ -160,7 +177,7 @@ const Home = () => {
                   <Button 
                     asChild 
                     className="w-full bg-teal-600 hover:bg-teal-700"
-                    onClick={() => trackProductClick(featuredProduct.id)}
+                    onClick={() => trackProductClick(featuredProduct.id, "hero_section")}
                   >
                     <a href={featuredProduct.link} target="_blank" rel="noopener noreferrer">
                       View Best Price
@@ -206,8 +223,12 @@ const Home = () => {
                 </div>
               ))
             ) : (
-              topProducts.slice(0, 3).map((product, index) => (
-                <ProductCard key={product.id} product={product} showRank={true} />
+              rankedProducts.slice(0, 3).map((product, index) => (
+                <ProductCard 
+                  key={product.id} 
+                  product={product} 
+                  showRank={true} 
+                />
               ))
             )}
           </div>

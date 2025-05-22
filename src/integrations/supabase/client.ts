@@ -18,14 +18,15 @@ export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABL
 });
 
 // Helper function to track product clicks
-export const trackProductClick = async (productId: string) => {
+export const trackProductClick = async (productId: string, source: string = 'unknown') => {
   try {
     const { error } = await supabase
       .from('product_clicks')
       .insert({
         product_id: productId,
         referrer: document.referrer || null,
-        user_agent: navigator.userAgent || null
+        user_agent: navigator.userAgent || null,
+        source: source // Track the source of the click
       });
       
     if (error) {
@@ -33,5 +34,26 @@ export const trackProductClick = async (productId: string) => {
     }
   } catch (err) {
     console.error('Failed to track product click:', err);
+  }
+};
+
+// Helper function to track promotion area clicks
+export const trackPromotionClick = async (productId: string, promotionArea: string, blogId?: string) => {
+  try {
+    const { error } = await supabase
+      .from('promotion_clicks')
+      .insert({
+        product_id: productId,
+        promotion_area: promotionArea,
+        blog_id: blogId || null,
+        referrer: document.referrer || null,
+        user_agent: navigator.userAgent || null
+      });
+      
+    if (error) {
+      console.error('Error tracking promotion click:', error);
+    }
+  } catch (err) {
+    console.error('Failed to track promotion click:', err);
   }
 };

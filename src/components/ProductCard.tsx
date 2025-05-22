@@ -21,15 +21,17 @@ interface ProductCardProps {
   product: ProductType;
   showRank?: boolean;
   variant?: 'default' | 'compact';
+  source?: string;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ 
   product, 
   showRank = false,
-  variant = 'default'
+  variant = 'default',
+  source = 'product_card'
 }) => {
   const handleClick = () => {
-    trackProductClick(product.id);
+    trackProductClick(product.id, source);
   };
 
   // Display first 2 pros and cons if they exist
@@ -41,23 +43,23 @@ const ProductCard: React.FC<ProductCardProps> = ({
     if (!rank) return {};
     
     if (rank === 1) return { 
-      className: "absolute -top-4 -left-4 bg-amber-500 text-white w-14 h-14 rounded-full flex flex-col items-center justify-center font-bold shadow-lg z-20 border-2 border-white transform translate-x-1 translate-y-1",
+      className: "absolute -top-6 -left-6 bg-amber-500 text-white w-14 h-14 rounded-full flex flex-col items-center justify-center font-bold shadow-lg z-30 border-2 border-white transform translate-x-2 translate-y-2",
       icon: <Medal className="h-5 w-5 text-white mb-0.5" />,
       label: "Best Pick"
     };
     if (rank === 2) return { 
-      className: "absolute -top-4 -left-4 bg-gray-400 text-white w-14 h-14 rounded-full flex flex-col items-center justify-center font-bold shadow-lg z-20 border-2 border-white transform translate-x-1 translate-y-1",
+      className: "absolute -top-6 -left-6 bg-gray-400 text-white w-14 h-14 rounded-full flex flex-col items-center justify-center font-bold shadow-lg z-30 border-2 border-white transform translate-x-2 translate-y-2",
       icon: <Medal className="h-5 w-5 text-white mb-0.5" />,
       label: "Runner Up"
     };
     if (rank === 3) return { 
-      className: "absolute -top-4 -left-4 bg-amber-700 text-white w-14 h-14 rounded-full flex flex-col items-center justify-center font-bold shadow-lg z-20 border-2 border-white transform translate-x-1 translate-y-1",
+      className: "absolute -top-6 -left-6 bg-amber-700 text-white w-14 h-14 rounded-full flex flex-col items-center justify-center font-bold shadow-lg z-30 border-2 border-white transform translate-x-2 translate-y-2",
       icon: <Medal className="h-5 w-5 text-white mb-0.5" />,
       label: "3rd Place"
     };
 
     return { 
-      className: "absolute -top-4 -left-4 bg-brand-600 text-white w-14 h-14 rounded-full flex items-center justify-center font-bold shadow-lg z-20 border-2 border-white transform translate-x-1 translate-y-1"
+      className: "absolute -top-6 -left-6 bg-brand-600 text-white w-14 h-14 rounded-full flex items-center justify-center font-bold shadow-lg z-30 border-2 border-white transform translate-x-2 translate-y-2"
     };
   };
 
@@ -65,7 +67,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const rankStyle = getRankBadgeStyle(product.rank);
 
   return (
-    <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl relative group border border-gray-200 hover:border-brand-300 rounded-xl pt-2 pl-2">
+    <Card className="overflow-visible transition-all duration-300 hover:shadow-xl relative group border border-gray-200 hover:border-brand-300 rounded-xl pt-2 pl-2 mt-8 ml-2">
       {showRank && product.rank && (
         <div className={rankStyle.className}>
           {rankStyle.icon}

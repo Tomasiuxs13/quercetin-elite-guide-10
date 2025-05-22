@@ -12,6 +12,8 @@ import Unauthorized from "./pages/Unauthorized";
 import AdminLayout from "./components/admin/AdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
 import Products from "./pages/admin/Products";
+import Users from "./pages/admin/Users";
+import Settings from "./pages/admin/Settings";
 import Auth from "./pages/Auth";
 import Benefits from "./pages/Benefits";
 import FAQ from "./pages/FAQ";
@@ -25,7 +27,15 @@ import ProductDetail from "./pages/ProductDetail";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60, // 1 minute
+      refetchOnWindowFocus: true,
+      retry: 1
+    }
+  }
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -43,6 +53,8 @@ const App = () => (
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<Dashboard />} />
                 <Route path="products" element={<Products />} />
+                <Route path="users" element={<Users />} />
+                <Route path="settings" element={<Settings />} />
                 {/* More admin routes will be added later */}
               </Route>
             </Route>

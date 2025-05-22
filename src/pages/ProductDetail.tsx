@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ChevronLeft, Check, X, ExternalLink, Star, ShoppingCart, Heart, Award, ThumbsUp, Shield, BadgeCheck } from 'lucide-react';
@@ -7,7 +6,7 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import StarRating from '@/components/StarRating';
 import { Skeleton } from '@/components/ui/skeleton';
-import { trackProductClick } from '@/integrations/supabase/client';
+import { trackProductClick, trackPromotionClick } from '@/integrations/supabase/client';
 import { useProducts } from '@/hooks/useProducts';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProductCard from '@/components/ProductCard';
@@ -19,16 +18,48 @@ const ProductDetail = () => {
   const { data: product, isLoading, error } = useProductDetail(id);
   const [showSticky, setShowSticky] = useState(false);
   
-  // Get similar products (same brand or similar rating)
-  const similarProducts = products
-    .filter(p => p.id !== id && (p.brand === product?.brand || Math.abs(p.rating - (product?.rating || 0)) < 0.5))
-    .slice(0, 3);
+  // Get similar products based on brand or category
+  const similarProducts = React.useMemo(() => {
+    if (!product || !products.length) return [];
+    
+    // Filter products by same brand but not the current product
+    const sameBrand = products.filter(p => 
+      p.id !== id && 
+      p.brand === product.brand
+    );
+    
+    // If we have enough products from the same brand, return those
+    if (sameBrand.length >= 3) {
+      return sameBrand.slice(0, 3);
+    }
+    
+    // Otherwise, find products with similar rating and pricing
+    const otherSimilar = products.filter(p => 
+      p.id !== id && 
+      p.brand !== product.brand && 
+      Math.abs(p.rating - product.rating) < 0.5 &&
+      Math.abs(p.price - product.price) / product.price < 0.3 // Within 30% price range
+    ).sort((a, b) => b.rating - a.rating);
+    
+    // Combine same brand products with other similar ones
+    return [...sameBrand, ...otherSimilar].slice(0, 3);
+  }, [id, product, products]);
 
-  // Get alternative products (different brand but similar rating)
-  const alternativeProducts = products
-    .filter(p => p.id !== id && p.brand !== product?.brand && Math.abs(p.rating - (product?.rating || 0)) < 0.8)
-    .sort((a, b) => b.rating - a.rating)
-    .slice(0, 3);
+  // Get alternative products (different brand, different price point)
+  const alternativeProducts = React.useMemo(() => {
+    if (!product || !products.length) return [];
+    
+    // Find alternatives that are different from current product but high rated
+    return products
+      .filter(p => 
+        p.id !== id && 
+        p.brand !== product.brand && 
+        !similarProducts.find(s => s.id === p.id) && // Not in similar products
+        p.rating > 4.0 // Still good quality
+      )
+      .sort((a, b) => b.rating - a.rating)
+      .slice(0, 3);
+  }, [id, product, products, similarProducts]);
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -239,7 +270,7 @@ const ProductDetail = () => {
                 <Button 
                   size="lg" 
                   className="bg-teal-600 hover:bg-teal-700 gap-2"
-                  onClick={handleBuyClick}
+                  onClick={() => trackProductClick(product.id, 'product_detail_primary')}
                   asChild
                 >
                   <a href={product.link} target="_blank" rel="noopener noreferrer">
@@ -392,7 +423,7 @@ const ProductDetail = () => {
                         {alt.pros && alt.pros.length > 0 ? alt.pros[0] : "N/A"}
                       </td>
                       <td className="py-3 px-4 border-b">
-                        <Button size="sm" variant="outline" asChild>
+                        <Button size="sm" variant="outline" asChild onClick={() => trackPromotionClick(alt.id, 'comparison_table')}>
                           <Link to={`/products/${alt.id}`}>
                             Compare
                           </Link>
@@ -406,16 +437,28 @@ const ProductDetail = () => {
           </div>
 
           {/* Similar Products */}
-          {similarProducts.length > 0 && (
-            <div className="mt-12">
-              <h2 className="text-2xl font-semibold mb-6">Similar Products You Might Like</h2>
+          <div className="mt-12">
+            <h2 className="text-2xl font-semibold mb-6">Similar Products You Might Like</h2>
+            {similarProducts.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {similarProducts.map(similar => (
-                  <ProductCard key={similar.id} product={similar} variant="compact" />
+                  <ProductCard 
+                    key={similar.id} 
+                    product={similar} 
+                    variant="compact" 
+                    source="similar_products_section"
+                  />
                 ))}
               </div>
-            </div>
-          )}
+            ) : (
+              <div className="bg-gray-50 p-6 rounded-lg text-center">
+                <p className="text-gray-600">No similar products found at this time.</p>
+                <Button variant="outline" className="mt-4" asChild>
+                  <Link to="/products">Browse All Products</Link>
+                </Button>
+              </div>
+            )}
+          </div>
         </>
       )}
     </div>
