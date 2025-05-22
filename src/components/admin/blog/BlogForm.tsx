@@ -90,12 +90,14 @@ const BlogForm: React.FC<BlogFormProps> = ({
 
   const handleSubmit = async (values: FormValues) => {
     try {
-      // Add author_id if creating a new post
-      if (!post && user) {
-        values.author_id = user.id;
-      }
+      // Create a new object with form values
+      const postData = {
+        ...values,
+        // Only add author_id if creating a new post AND user exists
+        ...(user && !post ? { author_id: user.id } : {})
+      };
 
-      await onSubmit(values);
+      await onSubmit(postData);
     } catch (error) {
       console.error('Error submitting form:', error);
     }

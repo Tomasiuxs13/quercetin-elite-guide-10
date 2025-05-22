@@ -118,6 +118,19 @@ export function useBlogPosts() {
         post.published_at = new Date().toISOString();
       }
 
+      // Ensure required fields are present
+      if (!post.content) {
+        post.content = ''; // Provide a default value for content
+      }
+      
+      if (!post.title) {
+        post.title = 'Untitled'; // Provide a default title
+      }
+      
+      if (!post.slug) {
+        post.slug = `post-${Date.now()}`; // Generate a timestamp-based slug
+      }
+
       const { data, error } = await supabase
         .from('blog_posts')
         .insert(post)
