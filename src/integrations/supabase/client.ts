@@ -40,7 +40,8 @@ export const trackProductClick = async (productId: string, source: string = 'unk
 // Helper function to track promotion area clicks
 export const trackPromotionClick = async (productId: string, promotionArea: string, blogId?: string) => {
   try {
-    const { error } = await supabase
+    // Use any type to bypass TypeScript check until the types are regenerated
+    const { error } = await (supabase as any)
       .from('promotion_clicks')
       .insert({
         product_id: productId,

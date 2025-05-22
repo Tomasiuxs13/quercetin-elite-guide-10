@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowUpRight, Package, MousePointer, ArrowUp, ArrowDown, Loader2, Settings, Users } from 'lucide-react';
@@ -6,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 // Dashboard analytics fetch functions
 async function fetchProductCount() {
@@ -27,12 +27,18 @@ async function fetchClicksData() {
 }
 
 async function fetchPromotionClicksData() {
-  const { data, error } = await supabase
-    .from('promotion_clicks')
-    .select('*')
-    .catch(() => ({ data: [], error: null })); // Handle case where table might not exist yet
-  
-  return data || [];
+  try {
+    // Use any type to bypass TypeScript check until the types are regenerated
+    const { data, error } = await (supabase as any)
+      .from('promotion_clicks')
+      .select('*');
+    
+    if (error) throw error;
+    return data || [];
+  } catch (err) {
+    console.error('Failed to fetch promotion clicks:', err);
+    return [];
+  }
 }
 
 async function fetchUserCount() {
@@ -154,9 +160,9 @@ const Dashboard = () => {
         type: "click",
         productId: click.product_id,
         time: new Date(click.clicked_at),
-        source: click.source || 'unknown'
+        source: (click as any).source || 'unknown'
       })),
-      ...(promotionClicksData || []).map(promo => ({
+      ...(promotionClicksData || []).map((promo: any) => ({
         type: "promotion",
         productId: promo.product_id,
         time: new Date(promo.clicked_at),
@@ -363,7 +369,7 @@ const Dashboard = () => {
                 <Settings className="h-6 w-6 text-brand-500" />
               </div>
               <div className="mb-2">
-                <Badge className="bg-amber-500 text-xs">Configuration</Badge>
+                <Badge variant="secondary" className="bg-amber-100 text-amber-800 text-xs">Configuration</Badge>
               </div>
               <p className="text-gray-600 text-sm">
                 Adjust site settings and configurations
@@ -388,10 +394,10 @@ const Dashboard = () => {
                   <div>Revenue</div>
                 </div>
                 
-                {Array.from(new Set(promotionClicksData.map(p => p.promotion_area)))
+                {Array.from(new Set(promotionClicksData.map((p: any) => p.promotion_area)))
                   .slice(0, 4)
-                  .map((area, i) => {
-                    const areaClicks = promotionClicksData.filter(p => p.promotion_area === area);
+                  .map((area: string, i: number) => {
+                    const areaClicks = promotionClicksData.filter((p: any) => p.promotion_area === area);
                     const clickCount = areaClicks.length;
                     const areaConvRate = (conversionRate * 0.9 + Math.random() * 0.8).toFixed(1);
                     const areaRevenue = (clickCount * (parseFloat(areaConvRate) / 100) * 24.99).toFixed(2);

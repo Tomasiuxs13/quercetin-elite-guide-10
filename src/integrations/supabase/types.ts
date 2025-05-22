@@ -16,6 +16,7 @@ export type Database = {
           ip_address: string | null
           product_id: string | null
           referrer: string | null
+          source: string | null
           user_agent: string | null
         }
         Insert: {
@@ -24,6 +25,7 @@ export type Database = {
           ip_address?: string | null
           product_id?: string | null
           referrer?: string | null
+          source?: string | null
           user_agent?: string | null
         }
         Update: {
@@ -32,6 +34,7 @@ export type Database = {
           ip_address?: string | null
           product_id?: string | null
           referrer?: string | null
+          source?: string | null
           user_agent?: string | null
         }
         Relationships: [
@@ -124,6 +127,47 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      promotion_clicks: {
+        Row: {
+          blog_id: string | null
+          clicked_at: string
+          id: string
+          product_id: string | null
+          promotion_area: string
+          referrer: string | null
+          source: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          blog_id?: string | null
+          clicked_at?: string
+          id?: string
+          product_id?: string | null
+          promotion_area: string
+          referrer?: string | null
+          source?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          blog_id?: string | null
+          clicked_at?: string
+          id?: string
+          product_id?: string | null
+          promotion_area?: string
+          referrer?: string | null
+          source?: string | null
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "promotion_clicks_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
