@@ -8,6 +8,7 @@ import {
   AccordionItem,
   AccordionTrigger
 } from '@/components/ui/accordion';
+import { HelpCircle, ChevronRight } from 'lucide-react';
 
 const faqItems = [
   {
@@ -63,40 +64,57 @@ const faqItems = [
 const FAQ = () => {
   return (
     <div className="py-12">
-      <div className="container mx-auto px-4">
-        <div className="mb-12 text-center">
+      {/* Hero section */}
+      <div className="bg-gradient-to-br from-brand-50 to-blue-50 py-12 mb-12">
+        <div className="container mx-auto px-4 text-center">
+          <div className="inline-flex items-center justify-center p-2 bg-white rounded-full shadow-sm mb-4">
+            <HelpCircle className="h-6 w-6 text-brand-600" />
+          </div>
           <h1 className="text-4xl font-bold mb-4">Frequently Asked Questions</h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Get answers to the most common questions about Quercetin supplements.
+          <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+            Get clear, evidence-based answers to your questions about Quercetin supplements
           </p>
         </div>
+      </div>
 
-        <div className="max-w-3xl mx-auto mb-16">
-          <Accordion type="single" collapsible className="w-full">
-            {faqItems.map((faq, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger className="text-left">{faq.question}</AccordionTrigger>
-                <AccordionContent>{faq.answer}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+      <div className="container mx-auto px-4">
+        <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-16">
+          <div className="p-6 md:p-8 border-b border-gray-100 bg-gray-50">
+            <h2 className="text-2xl font-semibold">Common Questions About Quercetin</h2>
+            <p className="text-gray-600 mt-2">Click on any question to reveal the answer</p>
+          </div>
+          
+          <div className="p-6 md:p-8">
+            <Accordion type="single" collapsible className="w-full divide-y">
+              {faqItems.map((faq, index) => (
+                <AccordionItem key={index} value={`item-${index}`} className="py-2 first:pt-0 last:pb-0 border-0">
+                  <AccordionTrigger className="text-left font-medium hover:text-brand-600 hover:no-underline py-4">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-700 pb-4 pt-1">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
         </div>
 
-        <div className="bg-brand-50 p-8 rounded-xl max-w-4xl mx-auto text-center">
+        <div className="bg-brand-50 p-8 rounded-xl max-w-4xl mx-auto shadow-sm border border-brand-100 text-center">
           <h2 className="text-2xl font-bold mb-4">Still have questions?</h2>
-          <p className="mb-6">
+          <p className="mb-6 text-gray-700">
             Learn more about quercetin or find the right supplement for your specific needs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild>
+            <Button asChild size="lg" className="bg-brand-600 hover:bg-brand-700">
               <Link to="/products/top-picks">
                 View Top Supplements
               </Link>
             </Button>
             
-            <Button variant="outline" asChild>
+            <Button variant="outline" asChild size="lg">
               <Link to="/what-is-quercetin">
-                Learn About Quercetin
+                Learn About Quercetin <ChevronRight className="ml-1 h-4 w-4" />
               </Link>
             </Button>
           </div>

@@ -9,7 +9,8 @@ import {
   ExternalLink,
   Shield,
   Award,
-  ThumbsUp
+  ThumbsUp,
+  Medal
 } from 'lucide-react';
 import { trackProductClick } from '@/integrations/supabase/client';
 import { ProductType } from '@/hooks/useProducts';
@@ -40,20 +41,23 @@ const ProductCard: React.FC<ProductCardProps> = ({
     if (!rank) return {};
     
     if (rank === 1) return { 
-      className: "absolute -top-3 -left-3 bg-amber-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold shadow-md z-10 border-2 border-white",
-      icon: <Award className="h-5 w-5 absolute -top-0.5 left-3.5 text-white" />
+      className: "absolute -top-4 -left-4 bg-amber-500 text-white w-14 h-14 rounded-full flex flex-col items-center justify-center font-bold shadow-lg z-10 border-2 border-white",
+      icon: <Medal className="h-5 w-5 text-white mb-0.5" />,
+      label: "Best Pick"
     };
     if (rank === 2) return { 
-      className: "absolute -top-3 -left-3 bg-gray-400 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold shadow-md z-10 border-2 border-white",
-      icon: <Award className="h-5 w-5 absolute -top-0.5 left-3.5 text-white" /> 
+      className: "absolute -top-4 -left-4 bg-gray-400 text-white w-14 h-14 rounded-full flex flex-col items-center justify-center font-bold shadow-lg z-10 border-2 border-white",
+      icon: <Medal className="h-5 w-5 text-white mb-0.5" />,
+      label: "Runner Up"
     };
     if (rank === 3) return { 
-      className: "absolute -top-3 -left-3 bg-amber-700 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold shadow-md z-10 border-2 border-white",
-      icon: <Award className="h-5 w-5 absolute -top-0.5 left-3.5 text-white" />
+      className: "absolute -top-4 -left-4 bg-amber-700 text-white w-14 h-14 rounded-full flex flex-col items-center justify-center font-bold shadow-lg z-10 border-2 border-white",
+      icon: <Medal className="h-5 w-5 text-white mb-0.5" />,
+      label: "3rd Place"
     };
 
     return { 
-      className: "absolute -top-3 -left-3 bg-brand-600 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold shadow-md z-10 border-2 border-white"
+      className: "absolute -top-4 -left-4 bg-brand-600 text-white w-14 h-14 rounded-full flex items-center justify-center font-bold shadow-lg z-10 border-2 border-white"
     };
   };
 
@@ -65,7 +69,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       {showRank && product.rank && (
         <div className={rankStyle.className}>
           {rankStyle.icon}
-          <span className="translate-y-0.5">{product.rank}</span>
+          <span className="text-xs">{rankStyle.label || `#${product.rank}`}</span>
         </div>
       )}
       
