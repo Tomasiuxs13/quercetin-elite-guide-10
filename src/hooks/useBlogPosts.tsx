@@ -3,6 +3,11 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/components/ui/use-toast';
+import { Database } from '@/integrations/supabase/types';
+
+// Define types based on our Supabase schema
+type BlogPostInsert = Database['public']['Tables']['blog_posts']['Insert'];
+type BlogPostUpdate = Database['public']['Tables']['blog_posts']['Update'];
 
 export type BlogPostType = {
   id: string;
@@ -105,31 +110,33 @@ export function useBlogPosts() {
   };
 
   // Create a new blog post
-  const createPost = async (post: Partial<BlogPostType>) => {
+  const createPost = async (postData: Partial<BlogPostType>) => {
     setIsSubmitting(true);
     try {
       // Make sure the slug is URL-friendly
-      if (post.slug) {
-        post.slug = post.slug.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      if (postData.slug) {
+        postData.slug = postData.slug.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
       }
       
       // If publishing now, set the published_at date
-      if (post.is_published) {
-        post.published_at = new Date().toISOString();
+      if (postData.is_published) {
+        postData.published_at = new Date().toISOString();
       }
 
-      // Ensure required fields are present
-      if (!post.content) {
-        post.content = ''; // Provide a default value for content
-      }
-      
-      if (!post.title) {
-        post.title = 'Untitled'; // Provide a default title
-      }
-      
-      if (!post.slug) {
-        post.slug = `post-${Date.now()}`; // Generate a timestamp-based slug
-      }
+      // Ensure required fields have values
+      const post: BlogPostInsert = {
+        title: postData.title || 'Untitled',
+        slug: postData.slug || `post-${Date.now()}`,
+        content: postData.content || '',
+        author_id: postData.author_id,
+        category: postData.category,
+        excerpt: postData.excerpt,
+        image: postData.image,
+        is_published: postData.is_published ?? false,
+        metadata: postData.metadata,
+        published_at: postData.published_at,
+        reading_time: postData.reading_time
+      };
 
       const { data, error } = await supabase
         .from('blog_posts')
@@ -159,18 +166,33 @@ export function useBlogPosts() {
   };
 
   // Update an existing blog post
-  const updatePost = async (id: string, updates: Partial<BlogPostType>) => {
+  const updatePost = async (id: string, postData: Partial<BlogPostType>) => {
     setIsSubmitting(true);
     try {
       // If publishing for the first time, set published_at
-      if (updates.is_published && !updates.published_at) {
-        updates.published_at = new Date().toISOString();
+      if (postData.is_published && !postData.published_at) {
+        postData.published_at = new Date().toISOString();
       }
       
       // Make sure the slug is URL-friendly if it's being updated
-      if (updates.slug) {
-        updates.slug = updates.slug.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      if (postData.slug) {
+        postData.slug = postData.slug.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
       }
+
+      // Create update object with correct typing
+      const updates: BlogPostUpdate = {
+        title: postData.title,
+        slug: postData.slug,
+        content: postData.content,
+        author_id: postData.author_id,
+        category: postData.category,
+        excerpt: postData.excerpt,
+        image: postData.image,
+        is_published: postData.is_published,
+        metadata: postData.metadata,
+        published_at: postData.published_at,
+        reading_time: postData.reading_time
+      };
 
       const { data, error } = await supabase
         .from('blog_posts')
