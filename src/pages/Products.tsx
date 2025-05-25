@@ -46,10 +46,10 @@ const Products = () => {
     <div className="py-12">
       <div className="container mx-auto px-4">
         <div className="mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-center">Quercetin Supplements</h1>
+          <h1 className="text-4xl font-bold mb-4 text-center">Spermidine Supplements</h1>
           <p className="text-xl text-gray-600 text-center max-w-3xl mx-auto">
-            Compare the best quercetin supplements based on our expert analysis,
-            quality testing, and user reviews.
+            Compare the best spermidine supplements based on our expert analysis,
+            quality testing, and user reviews for optimal longevity support.
           </p>
         </div>
 

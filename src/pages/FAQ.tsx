@@ -12,52 +12,52 @@ import { HelpCircle, ChevronRight } from 'lucide-react';
 
 const faqItems = [
   {
-    question: "What is Quercetin?",
-    answer: "Quercetin is a plant pigment (flavonoid) found in many plants, fruits, and vegetables such as red wine, onions, green tea, apples, and berries. It's one of the most abundant antioxidants in the human diet and is known for its potential to help fight inflammation, allergies, and support the immune system."
+    question: "What is Spermidine?",
+    answer: "Spermidine is a naturally occurring polyamine found in all living cells. It plays essential roles in cellular growth, DNA stabilization, and protein synthesis. Spermidine is found in foods like wheat germ, soybeans, aged cheese, and mushrooms. It's particularly known for its ability to promote autophagy, the cellular cleanup process that naturally declines with age."
   },
   {
-    question: "How much Quercetin should I take daily?",
-    answer: "Most studies have used quercetin doses ranging from 500 to 1,000 mg per day. However, the optimal dose depends on your specific health conditions and goals. It's always best to consult with a healthcare provider before starting any new supplement regimen, especially if you have existing health conditions or are taking medications."
+    question: "How much Spermidine should I take daily?",
+    answer: "Most studies have used spermidine doses ranging from 5 to 15 mg per day, with some studies using up to 20 mg daily. The optimal dose depends on your age, health status, and goals. Many supplements provide 8-12 mg per serving. It's always best to consult with a healthcare provider before starting any new supplement regimen."
   },
   {
-    question: "When is the best time to take Quercetin?",
-    answer: "Quercetin is often best absorbed when taken with food that contains some fat. Many people take it with meals, and if you're taking a higher dose, it may be beneficial to split it into two doses throughout the day (typically with breakfast and dinner). However, timing may vary based on your specific health goals and daily routine."
+    question: "When is the best time to take Spermidine?",
+    answer: "Spermidine can be taken with or without food, though some people prefer taking it with a meal to reduce any potential stomach discomfort. Many people take it in the morning as part of their daily routine. The most important factor is consistency - taking it at the same time each day."
   },
   {
-    question: "Are there any side effects of taking Quercetin supplements?",
-    answer: "Quercetin is generally considered safe for most people when taken at recommended doses. Some individuals might experience mild side effects like headaches, tingling sensations, or digestive discomfort. Higher doses might cause more pronounced side effects. If you're pregnant, nursing, on medication, or have health conditions, consult with a healthcare provider before supplementation."
+    question: "Are there any side effects of taking Spermidine supplements?",
+    answer: "Spermidine is generally well-tolerated when taken at recommended doses. Some individuals might experience mild digestive discomfort initially, but this typically subsides as the body adjusts. Higher doses might cause more pronounced effects. If you're pregnant, nursing, on medication, or have health conditions, consult with a healthcare provider before supplementation."
   },
   {
-    question: "Can Quercetin help with allergies?",
-    answer: "Yes, quercetin has natural antihistamine properties that may help reduce allergy symptoms. It works by stabilizing mast cells that release histamine, the compound responsible for allergy symptoms. Some studies suggest it may be particularly helpful for seasonal allergies, reducing symptoms like sneezing, itching, and watery eyes."
+    question: "Can Spermidine help with longevity?",
+    answer: "Research suggests that spermidine may support healthy aging and longevity through its ability to promote autophagy - the cellular cleanup process. Studies in various organisms have shown lifespan extension with spermidine supplementation. While human longevity studies are ongoing, the cellular mechanisms suggest potential benefits for healthspan and aging."
   },
   {
-    question: "Does Quercetin help with immune support?",
-    answer: "Research suggests that quercetin has immune-boosting properties. It may help strengthen the body's natural defenses by acting as an antioxidant, reducing inflammation, and potentially inhibiting the replication of certain viruses. Some studies have investigated its role in supporting immune function during times of stress or illness."
+    question: "How does Spermidine support autophagy?",
+    answer: "Spermidine is one of the most potent natural autophagy inducers. It helps activate cellular cleanup processes that remove damaged proteins and organelles. This is crucial because autophagy naturally declines with age, leading to cellular dysfunction. By promoting autophagy, spermidine helps maintain cellular health and function."
   },
   {
-    question: "Can I take Quercetin with other supplements or medications?",
-    answer: "Quercetin may interact with certain medications, including blood thinners, antibiotics, and drugs metabolized by the liver. It's also often paired with other supplements like vitamin C or bromelain to enhance absorption. Always consult with a healthcare provider before combining quercetin with medications or other supplements to avoid potential interactions."
+    question: "Can I take Spermidine with other supplements or medications?",
+    answer: "Spermidine may interact with certain medications, particularly those affecting cellular processes. It's often safely combined with other longevity supplements, but always consult with a healthcare provider before combining spermidine with medications or other supplements to avoid potential interactions."
   },
   {
-    question: "What form of Quercetin is best absorbed?",
-    answer: "Standard quercetin has relatively low bioavailability (how well it's absorbed by the body). Forms like quercetin phytosome or quercetin with enzymes like bromelain may be better absorbed. Some supplements also use delivery systems designed to enhance absorption, such as liposomal quercetin or quercetin bound to phospholipids."
+    question: "What's the difference between natural and synthetic Spermidine?",
+    answer: "Most high-quality spermidine supplements use natural sources, primarily wheat germ extract, which provides spermidine in its natural form along with other beneficial compounds. Synthetic spermidine has the same molecular structure but lacks the additional compounds found in natural sources. Natural sources are generally preferred for better bioavailability and safety."
   },
   {
-    question: "Is natural or synthetic Quercetin better?",
-    answer: "Both natural and synthetic forms of quercetin have similar molecular structures and effects. However, some people prefer natural sources from food or supplements derived from plant extracts. The quality and purity of the supplement are generally more important factors than whether it's natural or synthetic."
+    question: "Can Spermidine help with hair health?",
+    answer: "Some research suggests that spermidine may support hair health and growth. Studies have shown that spermidine can help maintain hair follicle health and may reduce hair loss by promoting cellular health in hair follicles. However, individual results may vary, and more research is needed."
   },
   {
-    question: "Can Quercetin help with exercise performance?",
-    answer: "Some research suggests that quercetin may support exercise performance by enhancing mitochondrial function, reducing oxidative stress, and potentially decreasing inflammation after intense exercise. Studies have shown mixed results, with some indicating modest improvements in endurance capacity and others showing no significant effect."
+    question: "How long does it take for Spermidine to start working?",
+    answer: "The timeframe for experiencing benefits from spermidine supplementation varies depending on the individual and the specific health aspect being addressed. Some cellular benefits may begin within days to weeks, while others like cardiovascular or cognitive benefits may take several weeks to months of consistent use to become noticeable."
   },
   {
-    question: "How long does it take for Quercetin to start working?",
-    answer: "The timeframe for experiencing benefits from quercetin supplementation varies depending on the individual and the specific health concern being addressed. For acute issues like allergies, some people report improvements within a few days. For chronic conditions or general health support, it might take several weeks of consistent use to notice benefits."
+    question: "Should I take Spermidine with food?",
+    answer: "Spermidine can be taken with or without food. Some people prefer taking it with a meal to minimize any potential stomach discomfort, while others take it on an empty stomach for potentially better absorption. The most important factor is taking it consistently at the same time each day."
   },
   {
-    question: "Should I take Quercetin with or without food?",
-    answer: "Quercetin is best taken with food, particularly foods containing some fat, as this can enhance absorption. Taking it with a meal that includes healthy fats like avocado, nuts, or olive oil may help maximize its bioavailability."
+    question: "Is Spermidine safe for long-term use?",
+    answer: "Spermidine is a natural compound that our bodies produce and use throughout life. Research suggests it's generally safe for long-term use at recommended doses. However, as with any supplement, it's wise to take periodic breaks and consult with a healthcare provider for personalized guidance, especially for long-term supplementation."
   }
 ];
 
@@ -72,7 +72,7 @@ const FAQ = () => {
           </div>
           <h1 className="text-4xl font-bold mb-4">Frequently Asked Questions</h1>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-            Get clear, evidence-based answers to your questions about Quercetin supplements
+            Get clear, evidence-based answers to your questions about Spermidine supplements
           </p>
         </div>
       </div>
@@ -80,7 +80,7 @@ const FAQ = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-16">
           <div className="p-6 md:p-8 border-b border-gray-100 bg-gray-50">
-            <h2 className="text-2xl font-semibold">Common Questions About Quercetin</h2>
+            <h2 className="text-2xl font-semibold">Common Questions About Spermidine</h2>
             <p className="text-gray-600 mt-2">Click on any question to reveal the answer</p>
           </div>
           
@@ -103,7 +103,7 @@ const FAQ = () => {
         <div className="bg-brand-50 p-8 rounded-xl max-w-4xl mx-auto shadow-sm border border-brand-100 text-center">
           <h2 className="text-2xl font-bold mb-4">Still have questions?</h2>
           <p className="mb-6 text-gray-700">
-            Learn more about quercetin or find the right supplement for your specific needs.
+            Learn more about spermidine or find the right supplement for your specific longevity needs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="bg-brand-600 hover:bg-brand-700">
@@ -113,8 +113,8 @@ const FAQ = () => {
             </Button>
             
             <Button variant="outline" asChild size="lg">
-              <Link to="/what-is-quercetin">
-                Learn About Quercetin <ChevronRight className="ml-1 h-4 w-4" />
+              <Link to="/what-is-spermidine">
+                Learn About Spermidine <ChevronRight className="ml-1 h-4 w-4" />
               </Link>
             </Button>
           </div>

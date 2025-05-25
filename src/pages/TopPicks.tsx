@@ -32,15 +32,15 @@ const TopPicks = () => {
               Expert-Reviewed
             </Badge>
             
-            <h1 className="text-4xl font-bold mb-5 text-center md:text-left md:text-5xl">Our Top <span className="text-brand-600">Quercetin</span> Picks</h1>
+            <h1 className="text-4xl font-bold mb-5 text-center md:text-left md:text-5xl">Our Top <span className="text-brand-600">Spermidine</span> Picks</h1>
             
             <p className="text-xl text-gray-600 md:max-w-2xl mb-8">
-              Based on comprehensive research and testing, these are our highest-rated quercetin supplements for optimal health benefits.
+              Based on comprehensive research and testing, these are our highest-rated spermidine supplements for optimal longevity and cellular health benefits.
             </p>
             
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
               <p className="text-gray-600 md:max-w-xl">
-                Our experts have analyzed dozens of quercetin supplements for quality, bioavailability, purity, 
+                Our experts have analyzed dozens of spermidine supplements for quality, purity, bioavailability, 
                 and value to bring you these top recommendations.
               </p>
               
@@ -68,11 +68,11 @@ const TopPicks = () => {
                   </h3>
                   <ul className="space-y-2 text-gray-700">
                     {[
-                      "Bioavailability and absorption",
-                      "Purity and potency",
-                      "Additional beneficial ingredients",
-                      "Manufacturing standards",
-                      "Third-party testing"
+                      "Spermidine purity and concentration",
+                      "Natural source quality (wheat germ)",
+                      "Third-party testing verification",
+                      "Manufacturing standards (GMP)",
+                      "Value for money"
                     ].map((item, i) => (
                       <li key={i} className="flex items-start">
                         <Check className="h-4 w-4 text-green-500 mr-1.5 mt-0.5 flex-shrink-0" />
@@ -88,11 +88,11 @@ const TopPicks = () => {
                   </h3>
                   <ul className="space-y-2 text-gray-700">
                     {[
+                      "Synthetic or low-quality sources",
                       "Unnecessary fillers and additives",
                       "Artificial colors or preservatives",
-                      "Low potency formulations",
-                      "Products with poor absorption",
-                      "Misleading marketing claims"
+                      "Products without testing verification",
+                      "Misleading longevity claims"
                     ].map((item, i) => (
                       <li key={i} className="flex items-start">
                         <span className="text-red-500 mr-1.5 font-medium text-lg leading-none mt-0">•</span>
@@ -158,7 +158,7 @@ const TopPicks = () => {
                   <Award className="h-6 w-6 text-brand-600" />
                 </div>
                 <h3 className="font-semibold mb-2">Expert Analysis</h3>
-                <p className="text-sm text-gray-600">Evaluated by nutrition experts and researchers</p>
+                <p className="text-sm text-gray-600">Evaluated by longevity experts and researchers</p>
               </div>
               
               <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 text-center">
@@ -166,7 +166,7 @@ const TopPicks = () => {
                   <Filter className="h-6 w-6 text-brand-600" />
                 </div>
                 <h3 className="font-semibold mb-2">Rigorous Testing</h3>
-                <p className="text-sm text-gray-600">Tested for purity, potency, and absorption</p>
+                <p className="text-sm text-gray-600">Tested for purity, potency, and source quality</p>
               </div>
               
               <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 text-center">
@@ -188,7 +188,7 @@ const TopPicks = () => {
         <div className="bg-gradient-to-br from-brand-600 to-brand-700 p-8 rounded-xl max-w-4xl mx-auto text-center shadow-lg">
           <h2 className="text-2xl font-bold mb-4 text-white">Looking for more options?</h2>
           <p className="mb-6 text-brand-100">
-            View our complete selection of quercetin supplements to find the perfect match for your specific needs.
+            View our complete selection of spermidine supplements to find the perfect match for your longevity goals.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" variant="secondary" className="hover:bg-white transition-colors">

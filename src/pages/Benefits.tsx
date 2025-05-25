@@ -6,44 +6,44 @@ import { CheckCircle } from 'lucide-react';
 
 const benefitsList = [
   {
-    title: "Powerful Antioxidant",
-    description: "Quercetin is a flavonoid with potent antioxidant properties that help neutralize free radicals in the body. Free radicals can damage cells, contributing to aging and various diseases, including cancer. By neutralizing these harmful molecules, quercetin helps protect your cells from oxidative stress and damage.",
-    details: "Research suggests that quercetin's antioxidant capacity may be stronger than other flavonoids, making it particularly effective at combating oxidative stress associated with chronic diseases."
+    title: "Autophagy Enhancement",
+    description: "Spermidine is one of the most potent natural autophagy inducers. Autophagy is the cellular process of cleaning up damaged proteins and organelles, which naturally declines with age. By promoting autophagy, spermidine helps maintain cellular health and function.",
+    details: "Research shows that spermidine can extend lifespan in various organisms by enhancing autophagy, suggesting it may have similar benefits for human longevity and healthspan."
   },
   {
-    title: "Anti-inflammatory Properties",
-    description: "Quercetin helps reduce inflammation in the body by inhibiting enzymes that promote inflammation and by blocking the release of histamine. This may help alleviate symptoms of inflammatory conditions like arthritis, asthma, and allergies.",
-    details: "Studies indicate that quercetin can downregulate the production of inflammatory cytokines and inhibit inflammatory pathways, potentially offering relief for various inflammatory conditions."
+    title: "Cardiovascular Health Support",
+    description: "Studies indicate that spermidine may support heart health by improving cardiac function and reducing age-related cardiovascular decline. It may help maintain healthy blood pressure and support overall cardiovascular wellness.",
+    details: "Clinical research has shown that higher dietary spermidine intake is associated with reduced cardiovascular disease risk and improved cardiac function in aging populations."
+  },
+  {
+    title: "Cognitive Function Protection",
+    description: "Spermidine may help protect brain health and cognitive function as we age. Research suggests it can support memory, learning, and overall brain performance by promoting cellular health in neural tissues.",
+    details: "Animal studies have demonstrated that spermidine supplementation can improve memory formation and protect against age-related cognitive decline through autophagy enhancement in brain cells."
+  },
+  {
+    title: "Cellular Longevity Support",
+    description: "As a natural polyamine, spermidine plays crucial roles in cellular growth, development, and maintenance. It helps stabilize DNA, supports protein synthesis, and maintains cellular membrane integrity.",
+    details: "Spermidine levels naturally decline with age, and supplementation may help restore cellular function and support healthy aging processes at the molecular level."
+  },
+  {
+    title: "Metabolic Health Benefits",
+    description: "Research suggests that spermidine may support healthy metabolism and energy production. It may help maintain healthy blood sugar levels and support mitochondrial function for optimal cellular energy.",
+    details: "Studies have shown that spermidine can improve glucose tolerance and support healthy metabolic function, which are important factors in healthy aging."
   },
   {
     title: "Immune System Support",
-    description: "By modulating the immune response, quercetin helps strengthen your body's natural defenses against infections. It can enhance the function of immune cells and help the body respond more effectively to pathogens.",
-    details: "During viral infections, quercetin may work as a zinc ionophore, helping transport zinc into cells where it can inhibit viral replication, enhancing the body's ability to fight infections."
+    description: "Spermidine may help support immune function by maintaining the health of immune cells and supporting their proper function throughout the aging process.",
+    details: "Research indicates that spermidine can help maintain immune cell function and may support the body's natural defense mechanisms against age-related immune decline."
   },
   {
-    title: "Allergy Relief",
-    description: "Quercetin acts as a natural antihistamine by stabilizing mast cells, which are responsible for releasing histamine during allergic reactions. By reducing histamine release, it may help alleviate allergy symptoms like sneezing, itching, and watery eyes.",
-    details: "Clinical studies have shown that quercetin can be comparable to conventional antihistamines for some people, but without the drowsiness and other side effects associated with many allergy medications."
+    title: "Hair and Skin Health",
+    description: "Spermidine may support healthy hair growth and skin appearance. Some studies suggest it can help maintain hair follicle health and support the natural renewal processes in skin cells.",
+    details: "Clinical studies have shown that spermidine supplementation may help reduce hair loss and support hair growth by promoting healthy cellular function in hair follicles."
   },
   {
-    title: "Cardiovascular Health",
-    description: "Quercetin may promote heart health by reducing blood pressure, improving endothelial function, and preventing LDL cholesterol oxidation. These effects collectively contribute to a reduced risk of heart disease.",
-    details: "Several studies have demonstrated quercetin's ability to lower systolic and diastolic blood pressure in hypertensive individuals, potentially reducing the risk of heart attacks and strokes."
-  },
-  {
-    title: "Blood Sugar Regulation",
-    description: "Research suggests that quercetin may help improve insulin sensitivity and reduce blood sugar levels, potentially benefiting those with diabetes or at risk for developing it.",
-    details: "Quercetin has been shown to inhibit enzymes involved in carbohydrate digestion and absorption, which may help prevent spikes in blood sugar levels after meals."
-  },
-  {
-    title: "Brain Health Support",
-    description: "Quercetin's antioxidant and anti-inflammatory properties may help protect brain cells from damage and reduce the risk of neurodegenerative diseases like Alzheimer's and Parkinson's.",
-    details: "Recent research indicates that quercetin can cross the blood-brain barrier and may help prevent the formation of amyloid plaques associated with Alzheimer's disease."
-  },
-  {
-    title: "Exercise Performance Enhancement",
-    description: "Some studies suggest that quercetin supplementation may improve endurance exercise capacity and reduce fatigue by enhancing mitochondrial function and increasing energy production.",
-    details: "Athletic performance studies have shown that quercetin may increase VO2 max and time to fatigue in both trained and untrained individuals, although results vary between studies."
+    title: "Sleep Quality Enhancement",
+    description: "Some research suggests that spermidine may help improve sleep quality and duration, which are crucial factors for overall health and longevity.",
+    details: "Studies have indicated that spermidine supplementation may help regulate sleep patterns and improve sleep quality, which is essential for cellular repair and overall well-being."
   }
 ];
 
@@ -52,10 +52,10 @@ const Benefits = () => {
     <div className="py-12">
       <div className="container mx-auto px-4">
         <div className="mb-12 text-center">
-          <h1 className="text-4xl font-bold mb-4">Health Benefits of Quercetin</h1>
+          <h1 className="text-4xl font-bold mb-4">Health Benefits of Spermidine</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Quercetin is a powerful flavonoid with numerous evidence-backed health benefits.
-            Discover how this natural compound can support your health and wellbeing.
+            Spermidine is a natural polyamine with powerful longevity and cellular health benefits.
+            Discover how this remarkable compound can support your health and wellbeing.
           </p>
         </div>
 
@@ -73,15 +73,15 @@ const Benefits = () => {
         </div>
 
         <div className="bg-brand-50 p-8 rounded-xl max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold mb-4 text-center">Find Your Ideal Quercetin Supplement</h2>
+          <h2 className="text-2xl font-bold mb-4 text-center">Find Your Ideal Spermidine Supplement</h2>
           <p className="text-center mb-6">
-            Now that you understand the benefits of quercetin, find the right supplement
-            that meets your specific health needs and quality standards.
+            Now that you understand the benefits of spermidine, find the right supplement
+            that meets your specific longevity and health needs.
           </p>
           <div className="flex justify-center">
             <Button size="lg" asChild>
               <Link to="/products/top-picks">
-                View Top-Rated Quercetin Supplements
+                View Top-Rated Spermidine Supplements
               </Link>
             </Button>
           </div>

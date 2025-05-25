@@ -12,7 +12,7 @@ const Logo: React.FC<LogoProps> = ({ className = '' }) => {
       to="/" 
       className={`inline-flex items-center font-heading font-bold text-xl md:text-2xl ${className}`}
     >
-      <span className="text-brand-600 mr-1">Q</span>
+      <span className="text-brand-600 mr-1">S</span>
       <span className="text-gray-800">Best</span>
       <span className="text-brand-600">Supplements</span>
     </Link>

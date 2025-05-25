@@ -15,9 +15,9 @@ const About = () => {
             <div className="inline-flex items-center justify-center p-2 bg-white rounded-full shadow-sm mb-4">
               <Users className="h-6 w-6 text-brand-600" />
             </div>
-            <h1 className="text-4xl font-bold mb-4 text-center">About QBestSupplements</h1>
+            <h1 className="text-4xl font-bold mb-4 text-center">About SBestSupplements</h1>
             <p className="text-xl text-gray-700 text-center mb-0 max-w-2xl mx-auto">
-              Your trusted resource for evidence-based quercetin supplement information
+              Your trusted resource for evidence-based spermidine supplement information
             </p>
           </div>
         </div>
@@ -31,9 +31,9 @@ const About = () => {
               <Award className="h-5 w-5 mr-2 text-brand-600" /> Our Mission
             </h2>
             <p className="text-gray-700">
-              At QBestSupplements, our mission is to cut through the noise and provide you with clear, 
-              trustworthy, and research-backed information about quercetin supplements. We believe that 
-              everyone deserves access to high-quality health products without the confusion of marketing 
+              At SBestSupplements, our mission is to cut through the noise and provide you with clear, 
+              trustworthy, and research-backed information about spermidine supplements. We believe that 
+              everyone deserves access to high-quality longevity products without the confusion of marketing 
               hype or misleading claims.
             </p>
           </div>
@@ -45,15 +45,15 @@ const About = () => {
             </h2>
             <div className="prose prose-lg max-w-none text-gray-700">
               <p>
-                Founded in 2023 by a team of health enthusiasts, nutritionists, and research analysts, 
-                QBestSupplements grew from our own frustration with the supplement industry. We found it 
-                challenging to identify truly effective quercetin products among the sea of options, each 
-                making bold claims without substantial evidence.
+                Founded in 2023 by a team of longevity enthusiasts, nutritionists, and research analysts, 
+                SBestSupplements grew from our own fascination with the emerging science of spermidine and 
+                healthy aging. We found it challenging to identify truly effective spermidine products among 
+                the growing market of options, each making bold longevity claims without substantial evidence.
               </p>
               <p>
-                Our team brings together expertise in nutrition science, biochemistry, and consumer advocacy. 
-                We're not just reviewers – we're consumers who understand the importance of making informed 
-                health decisions.
+                Our team brings together expertise in longevity research, biochemistry, and consumer advocacy. 
+                We're not just reviewers – we're individuals passionate about healthy aging who understand 
+                the importance of making informed decisions about longevity supplements.
               </p>
             </div>
           </div>
@@ -75,7 +75,7 @@ const About = () => {
                     </div>
                     <div>
                       <strong className="text-gray-900">Research-First Approach</strong>
-                      <p className="text-gray-700 mt-1">We analyze scientific studies on quercetin and its various formulations.</p>
+                      <p className="text-gray-700 mt-1">We analyze scientific studies on spermidine and its various formulations.</p>
                     </div>
                   </li>
                   <li className="flex items-start">
@@ -84,7 +84,7 @@ const About = () => {
                     </div>
                     <div>
                       <strong className="text-gray-900">Independent Testing</strong>
-                      <p className="text-gray-700 mt-1">We work with independent labs to verify purity, potency, and bioavailability claims.</p>
+                      <p className="text-gray-700 mt-1">We work with independent labs to verify purity, potency, and source quality claims.</p>
                     </div>
                   </li>
                 </ul>
@@ -163,7 +163,7 @@ const About = () => {
             <h3 className="text-xl font-semibold mb-4 text-center">Connect With Us</h3>
             <p className="mb-6 text-gray-700 text-center max-w-md mx-auto">
               Have questions, feedback, or suggestions? We'd love to hear from you. Your insights help us 
-              improve our content and better serve our community.
+              improve our content and better serve our longevity community.
             </p>
             <div className="flex justify-center">
               <Button asChild size="lg" className="bg-brand-600 hover:bg-brand-700">

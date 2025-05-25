@@ -17,39 +17,39 @@ import { trackProductClick } from '@/integrations/supabase/client';
 
 const benefits = [
   {
-    title: "Powerful Antioxidant",
-    description: "Helps neutralize free radicals and reduce oxidative stress throughout the body."
+    title: "Cellular Renewal & Autophagy",
+    description: "Promotes cellular cleanup and renewal processes that naturally decline with age."
   },
   {
-    title: "Anti-inflammatory Properties",
-    description: "May help reduce inflammation and alleviate symptoms of inflammatory conditions."
+    title: "Longevity Support",
+    description: "May help support healthy aging and cellular function based on emerging research."
   },
   {
-    title: "Immune System Support",
-    description: "Can help strengthen the body's natural defenses against infections."
+    title: "Heart Health",
+    description: "Supports cardiovascular health and may help maintain healthy blood pressure."
   },
   {
-    title: "Allergy Relief",
-    description: "May help reduce histamine release and alleviate allergy symptoms."
+    title: "Cognitive Function",
+    description: "May support brain health and cognitive function as we age."
   }
 ];
 
 const faqs = [
   {
-    question: "What is Quercetin?",
-    answer: "Quercetin is a plant flavonoid found in many fruits, vegetables, and grains. It's one of the most abundant antioxidants in the human diet and is known for its anti-inflammatory and immune-supporting properties."
+    question: "What is Spermidine?",
+    answer: "Spermidine is a naturally occurring polyamine found in all living cells. It plays a crucial role in cellular processes including autophagy (cellular cleanup), DNA stabilization, and protein synthesis. It's found in foods like wheat germ, soybeans, and aged cheese."
   },
   {
-    question: "How much Quercetin should I take daily?",
-    answer: "Most studies have used quercetin doses ranging from 500 to 1,000 mg per day. However, the optimal dose depends on your health conditions and goals. It's always best to consult with a healthcare provider before starting any new supplement."
+    question: "How much Spermidine should I take daily?",
+    answer: "Most studies have used spermidine doses ranging from 5 to 15 mg per day. However, the optimal dose depends on your age, health status, and goals. It's always best to consult with a healthcare provider before starting any new supplement."
   },
   {
-    question: "When is the best time to take Quercetin?",
-    answer: "Quercetin is often best absorbed when taken with food that contains fats. Many people take it with meals, split into two doses throughout the day. However, timing may vary based on your specific health goals and routine."
+    question: "When is the best time to take Spermidine?",
+    answer: "Spermidine can be taken with or without food. Many people prefer taking it in the morning as it may support energy and cellular function throughout the day. Consistency in timing is more important than the specific time."
   },
   {
-    question: "Are there any side effects of taking Quercetin supplements?",
-    answer: "Quercetin is generally considered safe for most people when taken at recommended doses. Some individuals might experience mild side effects like headaches or digestive discomfort. If you're on medication or have health conditions, consult with a healthcare provider before supplementation."
+    question: "Are there any side effects of taking Spermidine supplements?",
+    answer: "Spermidine is generally well-tolerated when taken at recommended doses. Some individuals might experience mild digestive discomfort initially. If you're on medication or have health conditions, consult with a healthcare provider before supplementation."
   }
 ];
 
@@ -81,15 +81,15 @@ const Home = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="animate-in">
               <span className="inline-block bg-brand-100 text-brand-800 text-sm font-medium px-3 py-1 rounded-full mb-6">
-                Top Quercetin Supplements of {new Date().getFullYear()}
+                Top Spermidine Supplements of {new Date().getFullYear()}
               </span>
               
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                Find Your <span className="text-brand-600">Perfect Quercetin</span> Supplement
+                Find Your <span className="text-brand-600">Perfect Spermidine</span> Supplement
               </h1>
               
               <p className="text-lg text-gray-700 mb-8 max-w-lg">
-                Expert-reviewed, science-backed recommendations to help you choose the best Quercetin supplement for your health needs.
+                Expert-reviewed, science-backed recommendations to help you choose the best Spermidine supplement for longevity and cellular health.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4">
@@ -100,8 +100,8 @@ const Home = () => {
                 </Button>
                 
                 <Button size="lg" variant="outline" asChild>
-                  <Link to="/what-is-quercetin">
-                    Learn About Quercetin
+                  <Link to="/what-is-spermidine">
+                    Learn About Spermidine
                   </Link>
                 </Button>
               </div>
@@ -138,7 +138,7 @@ const Home = () => {
                   <div className="flex items-center mb-6">
                     <div className="mr-4 flex-shrink-0">
                       <img 
-                        src={featuredProduct.image || "https://placehold.co/300x400/f5f5f5/cccccc?text=Quercetin+Complex"} 
+                        src={featuredProduct.image || "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=400&h=300"} 
                         alt={featuredProduct.name} 
                         className="w-16 h-20 object-contain"
                       />
@@ -158,19 +158,19 @@ const Home = () => {
                   <ul className="space-y-3 mb-6">
                     <li className="flex items-start">
                       <Check className="h-5 w-5 text-teal-500 mr-2 mt-0.5" />
-                      <span>Highest bioavailability in our tests</span>
+                      <span>Highest purity in our tests</span>
                     </li>
                     <li className="flex items-start">
                       <Check className="h-5 w-5 text-teal-500 mr-2 mt-0.5" />
-                      <span>500mg pure quercetin per serving</span>
+                      <span>10mg pure spermidine per serving</span>
                     </li>
                     <li className="flex items-start">
                       <Check className="h-5 w-5 text-teal-500 mr-2 mt-0.5" />
-                      <span>Added bromelain for enhanced absorption</span>
+                      <span>Natural wheat germ extract source</span>
                     </li>
                     <li className="flex items-start">
                       <Check className="h-5 w-5 text-teal-500 mr-2 mt-0.5" />
-                      <span>Free from common allergens</span>
+                      <span>Third-party tested for purity</span>
                     </li>
                   </ul>
                   
@@ -194,9 +194,9 @@ const Home = () => {
       <section className="section bg-white py-16">
         <div className="container mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Top Quercetin Supplements</h2>
+            <h2 className="text-3xl font-bold mb-4">Top Spermidine Supplements</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Our expert team has researched and tested dozens of Quercetin supplements to bring you the very best options on the market.
+              Our expert team has researched and tested dozens of Spermidine supplements to bring you the very best options for longevity and cellular health.
             </p>
           </div>
           
@@ -247,9 +247,9 @@ const Home = () => {
       <section className="section bg-gray-50 py-16">
         <div className="container mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Why Choose Quercetin?</h2>
+            <h2 className="text-3xl font-bold mb-4">Why Choose Spermidine?</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Quercetin is a powerful flavonoid with numerous health benefits backed by scientific research.
+              Spermidine is a natural compound that supports cellular health and longevity, backed by emerging scientific research.
             </p>
           </div>
           
@@ -278,7 +278,7 @@ const Home = () => {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Get answers to the most common questions about Quercetin supplements.
+              Get answers to the most common questions about Spermidine supplements.
             </p>
           </div>
           
@@ -308,7 +308,7 @@ const Home = () => {
         <div className="container mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Find Your Perfect Supplement?</h2>
           <p className="text-lg text-brand-100 mb-8 max-w-2xl mx-auto">
-            Discover the best Quercetin supplement for your specific needs with our in-depth reviews and comparison guides.
+            Discover the best Spermidine supplement for your specific longevity goals with our in-depth reviews and comparison guides.
           </p>
           <Button size="lg" variant="secondary" asChild>
             <Link to="/products/top-picks">

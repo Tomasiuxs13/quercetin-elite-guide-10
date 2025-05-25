@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PublicLayout from "./components/layouts/PublicLayout";
 import Home from "./pages/Home";
-import WhatIsQuercetin from "./pages/WhatIsQuercetin";
+import WhatIsSpermidine from "./pages/WhatIsSpermidine";
 import NotFound from "./pages/NotFound";
 import Unauthorized from "./pages/Unauthorized";
 import AdminLayout from "./components/admin/AdminLayout";
@@ -62,7 +62,7 @@ const App = () => (
             {/* Public Routes */}
             <Route element={<PublicLayout />}>
               <Route path="/" element={<Home />} />
-              <Route path="/what-is-quercetin" element={<WhatIsQuercetin />} />
+              <Route path="/what-is-spermidine" element={<WhatIsSpermidine />} />
               <Route path="/benefits" element={<Benefits />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/products" element={<ProductsPage />} />
